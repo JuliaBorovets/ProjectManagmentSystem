@@ -1,0 +1,30 @@
+package com.training.demo.entity;
+
+import lombok.*;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
+
+@Entity
+@Table(name = "worker")
+public class Worker {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "name")
+    private String name;
+
+    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
+    private List<Assignment> assignments;
+}
