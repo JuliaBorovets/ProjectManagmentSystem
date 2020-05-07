@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @EqualsAndHashCode
 
 @Entity
@@ -24,6 +25,25 @@ public class Worker {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "surname")
+    private String surname;
+
+    @Column(name = "login",nullable = false)
+    private String login;
+
+    @Column(name = "email",nullable = false)
+    private String email;
+
+    @Column(name = "password",nullable = false)
+    private String password;
+
+    @Column(name = "role",nullable = false)
+    private String role;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
     private List<Assignment> assignments;
