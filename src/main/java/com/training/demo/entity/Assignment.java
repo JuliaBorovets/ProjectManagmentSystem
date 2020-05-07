@@ -32,4 +32,5 @@ public class Assignment {
     @JoinColumn(name = "role_id")
     private Role role;
 
+
 }
