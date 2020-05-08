@@ -1,6 +1,5 @@
 package com.training.demo.controllers;
 
-import com.training.demo.dto.AssignmentDTO;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Artifact;
 import com.training.demo.entity.Project;
@@ -22,15 +21,13 @@ public class PageController {
 
     private final ProjectService projectService;
     private final WorkerService workerService;
-    private final AssignmentService assignmentService;
     private final TaskService taskService;
     private final ArtifactService artifactService;
 
     @Autowired
-    public PageController(ProjectService projectService, WorkerService workerService, AssignmentService assignmentService, TaskService taskService, ArtifactService artifactService) {
+    public PageController(ProjectService projectService, WorkerService workerService, TaskService taskService, ArtifactService artifactService) {
         this.projectService = projectService;
         this.workerService = workerService;
-        this.assignmentService = assignmentService;
         this.taskService = taskService;
         this.artifactService = artifactService;
     }
@@ -138,7 +135,7 @@ public class PageController {
     }
 
     private void addTask(Task task, Project project) {
-        taskService.addTask(task, project);
+        projectService.addTask(task, project);
     }
 
     private void addWorkerToProject(Worker worker, Project project) throws Exception {
@@ -159,15 +156,15 @@ public class PageController {
         model.addAttribute("workers", workers);
     }
 
-    private List<Project> getProjectsByWorkerId(Model model, Worker worker) {
-        List<AssignmentDTO> assignments = assignmentService.findAllAssignByWorkerId(worker.getId());
-        List<Project> projects = new ArrayList<>();
-        for (int i = 0; i < assignments.size(); i++) {
-            Task task = assignments.get(i).getTask();
-            projects.add(task.getProject());
-        }
-        return projects;
-    }
+//    private List<Project> getProjectsByWorkerId(Model model, Worker worker) {
+//        List<AssignmentDTO> assignments = assignmentService.findAllAssignByWorkerId(worker.getId());
+//        List<Project> projects = new ArrayList<>();
+//        for (int i = 0; i < assignments.size(); i++) {
+//            Task task = assignments.get(i).getTask();
+//            projects.add(task.getProject());
+//        }
+//        return projects;
+//    }
 
     private List<WorkerDTO> getWorkers(Project project) {
         List<WorkerDTO> workersByProjectId = workerService.findWorkersByProjectId(project.getId());

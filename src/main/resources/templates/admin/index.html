@@ -46,10 +46,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="project : ${project}">
-                        <td align="center" th:text="${project.projectName}"></td>
-                        <td align="center" th:text="${project.date}"></td>
-                        <td align="center" th:text="${project.info}"></td>
+                    <tr th:each="p : ${project}">
+                        <td align="center" th:text="${p.projectName}"></td>
+                        <td align="center" th:text="${p.date}"></td>
+                        <td align="center" th:text="${p.info}"></td>
 
                         <td align="center">
                             <a class="btn btn-default" href="#"><em class="fa fa-info"></em></a>

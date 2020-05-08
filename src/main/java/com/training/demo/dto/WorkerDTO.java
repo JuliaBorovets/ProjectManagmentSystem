@@ -1,6 +1,6 @@
 package com.training.demo.dto;
 
-import com.training.demo.entity.Assignment;
+import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import lombok.*;
 
@@ -32,17 +32,6 @@ public class WorkerDTO {
     //@NotNull
     String password;
 
-    List<Assignment> assignments;
+    List<Task> tasks;
 
-
-    public WorkerDTO(Worker worker) {
-        //this.id = worker.getId();
-        this.name = worker.getName();
-        this.surname = worker.getSurname();
-        this.login = worker.getLogin();
-        this.email = worker.getEmail();
-        // this.assignments = worker.getAssignments();
-
-
-    }
 }

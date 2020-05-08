@@ -34,9 +34,10 @@ public class TaskService {
 //                .build();
 //    }
 
-    public void addTask(Task task, Project project) {
-        project.addTask(task);
-    }
+//    public void addTask(Task task, Project project) {
+//        Project project1 = .findById(task.getId()).orElseThrow(() -> new RuntimeException("no task"));
+//        project.addTask(task);
+//    }
 
 }
 

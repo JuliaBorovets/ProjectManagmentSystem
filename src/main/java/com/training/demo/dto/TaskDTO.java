@@ -1,9 +1,8 @@
 package com.training.demo.dto;
 
 
-import com.training.demo.entity.Assignment;
-import com.training.demo.entity.Association;
 import com.training.demo.entity.Project;
+import com.training.demo.entity.Worker;
 import lombok.*;
 
 import javax.validation.constraints.Pattern;
@@ -28,7 +27,6 @@ public class TaskDTO {
     Boolean isDone;
     Project project;
 
-    List<Assignment> assignments;
-    List<Association> associations;
+    List<Worker> workers;
 
 }

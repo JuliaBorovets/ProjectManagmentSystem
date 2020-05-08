@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -24,56 +23,49 @@ public class Worker implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "surname")
     private String surname;
 
-    @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    @Enumerated(value = EnumType.STRING)
+    private UserRole role;
+
+    private boolean accountNonExpired;
+
+    private boolean accountNonLocked;
+
+    private boolean credentialsNonExpired;
+
+    private boolean enabled;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "worker", cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
 
-    @Column
-    private boolean accountNonExpired;
-
-    @Column
-    private boolean accountNonLocked;
-
-    @Column
-    private boolean credentialsNonExpired;
-
-    @Column
-    private boolean enabled;
-
+    @ManyToMany
+    @JoinTable(name = "worker_task",
+            joinColumns = @JoinColumn(name = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    private List<Task> tasks;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> result = new HashSet<>();
-//        result.add(getRole());
-        return result;
+        return new HashSet<>();
     }
 
     @Override
     public String getUsername() {
+
         return getLogin();
     }
+
 }

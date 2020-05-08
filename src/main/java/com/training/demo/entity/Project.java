@@ -35,23 +35,6 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
-    public Project(String name, String description, Long adminByWorkerId) {
-        this.name = name;
-        this.description = description;
-        this.adminByWorkerId = adminByWorkerId;
-        tasks = new ArrayList<Task>();
-    }
-
-    public Project(String name, String description, Long adminByWorkerId, ArrayList<Task> tasks) {
-        this.name = name;
-        this.description = description;
-        this.adminByWorkerId = adminByWorkerId;
-        this.tasks = tasks;
-    }
-
-    public void addTask(Task t) {
-        t.setProject(this);
-        tasks.add(t);
-    }
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    private List<Worker> workers;
 }

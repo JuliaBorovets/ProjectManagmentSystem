@@ -2,6 +2,7 @@ package com.training.demo.service;
 
 import com.training.demo.dto.ProjectDTO;
 import com.training.demo.entity.Project;
+import com.training.demo.entity.Task;
 import com.training.demo.repository.ProjectRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -73,5 +74,11 @@ public class ProjectService {
 
     public List<Project> getAllProjects() {
         return (List<Project>) projectRepository.findAll();
+    }
+
+    public void addTask(Task task, Project project) {
+        Project project1 = projectRepository.findById(project.getId()).orElseThrow(() -> new RuntimeException("no project"));
+        List<Task> tasks = project1.getTasks();
+        tasks.add(task);
     }
 }

@@ -18,33 +18,22 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "deadline")
     private String deadline;
 
-    @Column(name = "is_done")
     private boolean isDone;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
-
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Association> associations;
+    @ManyToMany(mappedBy = "tasks")
+    private List<Worker> workers;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     private Project project;
 
-    public void setProject(Project p) {
-        this.project = p;
-    }
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+    private List<Artifact> artifacts;
 }

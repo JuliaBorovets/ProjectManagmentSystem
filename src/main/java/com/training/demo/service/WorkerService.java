@@ -44,7 +44,7 @@ public class WorkerService implements UserDetailsService {
                         .surname(worker.getSurname())
                         .email(worker.getEmail())
                         .login(worker.getLogin())
-                        .assignments(worker.getAssignments())
+                        .tasks(worker.getTasks())
                         .build()).collect(Collectors.toList());
     }
 
@@ -76,7 +76,6 @@ public class WorkerService implements UserDetailsService {
                 .surname(worker.getSurname())
                 .login(worker.getLogin())
                 .email(worker.getEmail())
-                .role("admin")
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
