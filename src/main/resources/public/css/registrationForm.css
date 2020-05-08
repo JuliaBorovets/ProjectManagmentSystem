@@ -1,0 +1,96 @@
+.login-dark {
+    position: relative;
+    background-repeat: round;
+    background-size: contain;
+    height: 600px;
+    filter: blur(0px);
+    background-image: url(/img/941793.jpg);
+    text-align: center;
+    padding: 15px 0 20px;
+    font-size: 100px;
+    color: #2980ef;
+}
+
+.registration {
+    max-width: 320px;
+    width: 90%;
+    background-color: #1e2833;
+    padding: 40px;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary {
+    width: 280px;
+    height: 35px;
+    padding: 0;
+    margin: 40px 0 0;
+    background: #214a80;
+    border: none;
+    border-radius: 4px;
+    box-shadow: none;
+    text-shadow: none;
+    outline: none;
+}
+
+.btn-primary:active, .btn-primary:hover {
+    background: #214a80;
+    outline: none;
+}
+
+.button-group {
+    margin-top: 50px;
+}
+
+.form-group, .form-control, .form-control:active {
+    margin: 15px 0 0;
+    background-color: #1e2833;
+    border: none;
+    border-bottom: 1px solid #434a52;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+}
+
+.form-control:focus {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #434a52;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: white;
+
+}
+
+.registration {
+    height: 450px;
+    padding: 16px;
+    /*color: #edecf2;*/
+}
+
+
+.login-dark form .forgot {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: #6f7a85;
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.login-dark form .btn-primary:active {
+    transform: translateY(1px);
+}
+
+.login-clean form .forgot:hover, .login-clean form .forgot:active {
+    opacity: 1;
+    text-decoration: none;
+}
+

@@ -1,0 +1,129 @@
+header {
+    margin: 50px 0 20px;
+    text-align: center;
+    padding: 0 10px;
+}
+
+
+.reg {
+    max-width: 320px;
+    width: 90%;
+    background-color: #1e2833;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+    height: 400px;
+    padding: 16px;
+}
+
+.login-dark {
+    background-repeat: round;
+    background-size: contain;
+    background-color: #1e2833;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    height: 600px;
+    filter: blur(0px);
+    background-image: url(/img/941793.jpg);
+    position: relative;
+}
+
+header h1 {
+    font-weight: bold;
+    margin-bottom: 12px;
+    font-size: 28px;
+    margin-top: 30px;
+}
+
+.content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.content h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 40px 0 30px;
+}
+
+.content figure {
+    display: block;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.content figcaption {
+    font-size: 12px;
+    padding-top: 10px;
+}
+
+.content div.dropdown {
+    margin: 20px auto;
+    width: 130px;
+}
+
+.content blockquote p {
+    font-size: 14px;
+    padding: 15px 20px;
+    border-left: 3px solid #edecf2;
+    background-color: #f9f9fb;
+}
+
+.form-group, .form-control, .form-control:active {
+    margin: 15px 0 0;
+    background-color: #1e2833;
+    border: none;
+    border-bottom: 1px solid #434a52;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+}
+
+.form-control:focus, .form-control {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #434a52;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: white;
+
+}
+
+.illustration {
+    height: 160px;
+    text-align: center;
+    padding: 15px 0 20px;
+    font-size: 100px;
+    color: #2980ef;
+}
+
+.icon {
+    width: 50px;
+    height: 50px;
+    font-size: 80px;
+}
+
+
+.btn {
+    height: 35px;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    width: 280px;
+    background: #214a80 center;
+    border: none;
+    border-radius: 4px;
+    padding: 1px;
+    box-shadow: none;
+    text-shadow: none;
+    outline: none;
+}
+
+
+
