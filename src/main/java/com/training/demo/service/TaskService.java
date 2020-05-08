@@ -1,6 +1,5 @@
 package com.training.demo.service;
 
-import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.repository.TaskRepository;
 import org.springframework.stereotype.Service;

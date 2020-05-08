@@ -130,9 +130,20 @@ public class PageController {
         projectService.saveProject(project);
     }
 
-    private void deleteProject(Project project) throws Exception {
-        projectService.deleteProject(project);
+    // тест на видалення проекту
+    @GetMapping("/delete_test")
+    public String projectsPage(Model model, @AuthenticationPrincipal Worker worker) {
+        getAllProjects(model);
+        return "user/index";
     }
+
+    // видалення проекту
+    @RequestMapping("/delete/{id}")
+    public String deleteProject(Project project, @PathVariable("id") Long id) throws Exception {
+        projectService.deleteProject(project);
+        return "redirect:/delete_test";
+    }
+
 
     private void addTask(Task task, Project project) {
         projectService.addTask(task, project);

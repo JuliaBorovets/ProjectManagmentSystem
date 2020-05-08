@@ -46,14 +46,19 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="project : ${project}">
-                        <td align="center" th:text="${project.projectName}"></td>
-                        <td align="center" th:text="${project.date}"></td>
-                        <td align="center" th:text="${project.info}"></td>
+                    <tr th:each="p : ${project}">
+                        <td align="center" th:text="${p.id}"></td>
+                        <td align="center" th:text="${p.name}"></td>
+                        <td align="center" th:text="${p.description}"></td>
 
                         <td align="center">
+                            <form th:action="@{delete/{id}(id=${p.id})}">
+                                <form>
+                                    <button class="btn btn-default" type="submit" href="#"><em class="fa fa-trash"></em>
+                                    </button>
+                                </form>
+                            </form>
                             <a class="btn btn-default" href="#"><em class="fa fa-info"></em></a>
-                            <a class="btn btn-default" href="#"><em class="fa fa-trash"></em></a>
                         </td>
                     </tr>
                     </tbody>

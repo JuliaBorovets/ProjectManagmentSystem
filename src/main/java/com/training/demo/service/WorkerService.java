@@ -14,14 +14,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Lob;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-//import org.springframework.security.access.method.P;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 @Slf4j
