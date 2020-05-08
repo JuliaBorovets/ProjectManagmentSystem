@@ -32,6 +32,12 @@ public class PageController {
         this.artifactService = artifactService;
     }
 
+     @RequestMapping("/")
+    public String mainPage(Model model) {
+        getAllProjects(model);
+        return "index";
+    }
+    
     @GetMapping("/home")
     public String mainPage(Model model, @AuthenticationPrincipal Worker worker) {
         getAllProjects(model);
