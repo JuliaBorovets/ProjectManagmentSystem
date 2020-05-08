@@ -17,18 +17,21 @@
         <h2 class="sr-only">Login Form</h2>
 
         <div class="form-group">
-            <input class="form-control" type="text" name="name" th:placeholder="#{enter.first.name}">
-            <input class="form-control" type="text" name="last_name" th:placeholder="#{enter.last.name}">
-            <input class="form-control" type="text" name="login" th:placeholder="#{login}">
-            <input class="form-control" type="email" name="email" th:placeholder="#{enter.email}">
-            <input class="form-control" type="password" name="password" th:placeholder="#{enter.password}">
+            <form id="newUser" name="newUser" action="#" th:action="@{/reg}" th:object="${newWorker}" method="post">
+                <input class="form-control" type="text" name="name" th:placeholder="#{enter.first.name}">
+                <input class="form-control" type="text" name="surname" th:placeholder="#{enter.last.name}">
+                <input class="form-control" type="text" name="login" th:placeholder="#{enter.login}">
+                <input class="form-control" type="email" name="email" th:placeholder="#{enter.email}">
+                <input class="form-control" type="password" name="password" th:placeholder="#{enter.password}">
         </div>
+
 
         <div class="button-group">
             <input class="btn btn-primary btn-block" type="submit" th:value="#{register}"/>
             <a class="btn btn-primary btn-block" type="submit" th:text="#{cancel}" href="/login">{Відмінити}</a>
         </div>
 
+    </form>
     </form>
 </div>
 
