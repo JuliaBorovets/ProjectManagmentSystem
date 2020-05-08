@@ -1,0 +1,63 @@
+
+#app-navbar {
+    background: linear-gradient(120deg, #1f0423, #6c0773);
+}
+
+body {
+    background-color: #F5EEF8
+}
+
+.info {
+    text-align: center;
+}
+
+
+.form-control {
+
+    width: 700px;
+}
+
+.input-group {
+    width: 800px;
+}
+
+.container-fluid {
+    width: 700px;
+
+}
+
+.collapse {
+    justify-content: right;
+}
+
+
+.custom-search-input {
+    border: none;
+    border-bottom: 2px solid #214a80;
+    background: transparent;
+    outline: none;
+    padding-bottom: 5px;
+    min-width: 450px;
+    text-indent: 40px;
+    color: white;
+}
+
+.search-area {
+    display: inline-block;
+}
+
+.search-icon {
+    font-size: 16px;
+    margin-right: -20px;
+    margin-top: 3px;
+    margin-left: 20px;
+    color: #214a80;
+}
+
+.info {
+    text-align: center;
+}
+
+.left_projects {
+    margin-left: 20px;
+}

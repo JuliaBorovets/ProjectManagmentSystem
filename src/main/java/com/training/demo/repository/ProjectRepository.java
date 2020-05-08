@@ -1,6 +1,7 @@
 package com.training.demo.repository;
 
 import com.training.demo.entity.Project;
+import com.training.demo.entity.Worker;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

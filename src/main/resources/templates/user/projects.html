@@ -15,7 +15,7 @@
           href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/css/userPage.css">
+    <link rel="stylesheet" href="/css/userHomePage.css">
 
 </head>
 
@@ -26,76 +26,22 @@
 <br>
 
 <div class="info">
-    <h2 class="info" th:text="#{my.projects}"><span>{My projects}</span></h2>
+    <h2 class="info" th:text="${projectName}"><span>{project name}</span></h2>
 </div>
 
 <br>
 
-<div class="w3-sidebar w3-collapse" id="sidenav" style="top: 44px; display: block;">
-    <div id="leftmenuinner" style="padding-top: 44px;">
-        <div class="w3-light-grey" id="leftmenuinnerinner">
-            <a href="javascript:void(0)" onclick="close_menu()"
-               class="w3-button w3-hide-large w3-large w3-display-topright"
-               style="right:16px;padding:3px 12px;font-weight:bold;">×</a>
-            <script>
-                function filterContent(elmnt) {
-                    var x, i, val, show, showh2, showbr;
-                    val = elmnt.value;
-                    x = document.getElementById("leftmenuinnerinner").getElementsByTagName("*");
-                    for (i = 1; i < x.length; i++) {
-                        if (x[i].tagName == "H2") {
-                            if (showh2) {
-                                if (show == false) {
-                                    showh2.style.display = "none";
-                                } else {
-                                    showh2.style.display = "block";
-                                }
-                            }
-                            show = false;
-                            showh2 = x[i];
-                        }
-                        if (x[i].tagName == "BR") {
-                            if (showbr) {
-                                if (show == false) {
-                                    showbr.style.display = "none";
-                                } else {
-                                    showbr.style.display = "block";
-                                }
-                            }
-                            showbr = x[i];
-                        }
-                        if (x[i].tagName == "A") {
-                            if (x[i].innerHTML.toUpperCase().indexOf(val.toUpperCase()) == -1) {
-                                x[i].style.display = "none";
-                            } else {
-                                x[i].style.display = "block";
-                                show = true;
-                            }
-                        }
-                        if (showh2) {
-                            if (show == false) {
-                                showh2.style.display = "none";
-                            } else {
-                                showh2.style.display = "block";
-                            }
-                        }
-                    }
-                }
-            </script>
-            <input class="searchinput" placeholder="Поиск..." oninput="filterContent(this)">
-            <h2 class="left"><span class="left_h2">Bootstrap 4 Tutorial</span></h2>
+<form class="left_projects">
+    <div class="container-fluid">
+        <div class="card shadow">
 
-
-            <div class="container-fluid">
-                <div class="card shadow">
-
-                    <div class="card-body">
-                        <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                             aria-describedby="dataTable_info">
-                            <table class="table dataTable my-0" id="dataTable">
-                                <thead>
-                                <tr align="center">
-                                    <th th:text="#{project.name}"></th>
+            <div class="card-body">
+                <div class="table-responsive table mt-2" id="dataTable" role="grid"
+                     aria-describedby="dataTable_info">
+                    <table class="table dataTable my-0" id="dataTable">
+                        <thead>
+                        <tr align="center">
+                            <th th:text="#{project.name}"></th>
                                     <th th:text="#{project.date}"></th>
                                     <th th:text="#{project.info}"></th>
                                     <th><em class="fa fa-cog"></em></th>
@@ -108,27 +54,17 @@
                                     <td align="center" th:text="${p.description}"></td>
 
                                     <td align="center">
-                                        <form th:action="@{delete/{id}(id=${p.id})}">
-                                            <form>
-                                                <button class="btn btn-default" type="submit" href="#"><em
-                                                        class="fa fa-trash"></em>
-                                                </button>
-                                            </form>
-                                        </form>
                                         <a class="btn btn-default" href="#"><em class="fa fa-info"></em></a>
                                     </td>
                                 </tr>
                                 </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    </table>
                 </div>
             </div>
-
-            <br><br>
         </div>
     </div>
-</div>
+    <br>
+</form>
 
 <br>
 

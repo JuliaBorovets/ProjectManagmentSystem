@@ -190,7 +190,15 @@ public class PageController {
     }
 
     @RequestMapping("/user_projects")
-    public String getUserProjectsPage() {
+    public String getUserProjectsPage(Model model) {
+        getAllProjects(model);
+        return "user/projects";
+    }
+
+    @RequestMapping("/user_projects/{id}")
+    public String getProjectsById(Model model, @PathVariable("id") Long id) {
+        Project project = projectService.findProjectById(id);
+        model.addAttribute("projectName", project.getName());
         return "user/projects";
     }
 }
