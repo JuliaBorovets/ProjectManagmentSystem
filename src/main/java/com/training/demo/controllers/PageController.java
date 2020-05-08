@@ -189,5 +189,8 @@ public class PageController {
 
     }
 
-
+    @RequestMapping("/user_projects")
+    public String getUserProjectsPage() {
+        return "user/projects";
+    }
 }
