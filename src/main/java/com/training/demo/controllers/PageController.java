@@ -8,6 +8,7 @@ import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class PageController {
     }
 
     @GetMapping("/home")
-    public String mainPage(Model model) {
+    public String mainPage(Model model, @AuthenticationPrincipal Worker worker) {
         getAllProjects(model);
         return "homePage";
     }
@@ -47,6 +48,7 @@ public class PageController {
 
     @RequestMapping("/login")
     public String loginPage() {
+
         return "login";
     }
 
@@ -64,25 +66,6 @@ public class PageController {
         return "redirect:/login";
     }
 
-    @RequestMapping("/1")
-    public String mainPage1(Model model) {
-
-        model.addAttribute("worker", workerService.getAllWorkers());
-
-        return "index1";
-    }
-////
-//    @ResponseBody
-//    @RequestMapping("/2")
-//    public List<WorkerDTO> hi(@RequestParam Project project){
-//        return getWorkers(project);
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping("/3")
-//    public String hi(){
-//        return "hi ";
-//    }
 
 
 //    @GetMapping("/{login}")

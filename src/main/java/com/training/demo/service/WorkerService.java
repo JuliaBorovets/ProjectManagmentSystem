@@ -4,6 +4,8 @@ import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
 import com.training.demo.repository.WorkerRepository;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Lob;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
+@Slf4j
 public class WorkerService implements UserDetailsService {
 
     private final WorkerRepository workerRepository;
@@ -138,6 +142,8 @@ public class WorkerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        log.error("loading user with login " + login);
+        log.error(login);
         return workerRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(login));
     }
 }
