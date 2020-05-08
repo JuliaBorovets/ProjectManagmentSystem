@@ -32,8 +32,8 @@ public class WorkerService implements UserDetailsService {
 
     }
 
-    public List<WorkerDTO> findWorkersByProjectId(Long id) {
-        return workerRepository.findByProjectId(id).stream()
+    public List<WorkerDTO> findWorkersByProjectId(Project project) {
+        return workerRepository.findWorkersByProjects(project).stream()
                 .map(worker -> WorkerDTO.builder()
                         .name(worker.getName())
                         .surname(worker.getSurname())
@@ -110,7 +110,7 @@ public class WorkerService implements UserDetailsService {
                 .login(worker.getLogin())
                 .email(worker.getEmail())
                 .password(worker.getPassword())
-                .project(project)
+//                .project(project)
                 .build();
         try {
             workerRepository.save(updatedWorker);

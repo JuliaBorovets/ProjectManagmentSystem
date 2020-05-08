@@ -27,7 +27,7 @@ public class ProjectDTO {
         this.id = project.getId();
         this.name = project.getName();
         this.description = project.getDescription();
-        this.adminByWorkerId = project.getAdminByWorkerId();
+//        this.adminByWorkerId = project.getAdminByWorkerId();
         tasks = new ArrayList<Task>();
     }
 

@@ -46,9 +46,8 @@ public class Worker implements UserDetails {
 
     private boolean enabled;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @ManyToMany(mappedBy = "workers")
+    private List<Project> projects;
 
 
     @ManyToMany

@@ -43,7 +43,6 @@ public class ProjectService {
         return Project.builder()
                 .name(project.getName())
                 .description(project.getDescription())
-                .adminByWorkerId(project.getAdminByWorkerId())
                 .tasks(project.getTasks())
                 .build();
     }

@@ -169,7 +169,7 @@ public class PageController {
 
 
     private void getWorkersByProjectId(Model model, Project project) {
-        List<WorkerDTO> workers = workerService.findWorkersByProjectId(project.getId());
+        List<WorkerDTO> workers = workerService.findWorkersByProjectId(project);
         model.addAttribute("workers", workers);
     }
 
@@ -184,7 +184,7 @@ public class PageController {
 //    }
 
     private List<WorkerDTO> getWorkers(Project project) {
-        List<WorkerDTO> workersByProjectId = workerService.findWorkersByProjectId(project.getId());
+        List<WorkerDTO> workersByProjectId = workerService.findWorkersByProjectId(project);
         return workersByProjectId;
 
     }

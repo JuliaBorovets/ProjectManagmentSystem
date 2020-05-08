@@ -29,12 +29,12 @@ public class Project {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "admin_is")
-    private Long adminByWorkerId;
-
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    @ManyToMany
+    @JoinTable(name = "worker_project",
+            joinColumns = @JoinColumn(name = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Worker> workers;
 }
