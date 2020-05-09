@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<!--suppress HtmlUnknownAttribute -->
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>New order</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/homePage.css">
+</head>
+
+<body>
+<div th:include="fragments/header :: header_user_admin" th:remove="tag"></div>
+
+<div class="column">
+    <section class="jumbotron2 text-center">
+
+        <br>
+        <div class="alert" th:if="${error}">
+            <h3 class="black" th:text="#{reg.error.generic}">{Reg error}</h3>
+        </div>
+
+
+        <h1 class="calc" th:text="#{create.new.project}">{Створення нового проектy}</h1>
+
+        <div class="project">
+            <form id="newProject" name="newProject" action="#" th:action="@{/create}" th:object="${newProject}"
+                  method="post">
+                <br>
+
+                <div>
+
+                    <input type="number" id="name" name="weight" th:field="*{name}" class="weight"
+                           th:placeholder="#{new.project.name}" required>
+                </div>
+
+                <br>
+
+                <br>
+
+
+
+                <br>
+                <form>
+                    <input class="calculate waves-effect waves-light" type="submit" value="Submit">
+                </form>
+                <br>
+
+                <br>
+
+
+            </form>
+        </div>
+    </section>
+</div>
+<div th:include="fragments/footer :: footer" th:remove="tag"></div>
+
+</body>
+</html>

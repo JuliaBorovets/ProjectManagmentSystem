@@ -1,5 +1,6 @@
 package com.training.demo.controllers;
 
+import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Artifact;
 import com.training.demo.entity.Project;
@@ -50,7 +51,7 @@ public class PageController {
     }
 
     @PostMapping("/reg")
-    public String newUser(@ModelAttribute("newWorker") @Valid WorkerDTO worker) throws Exception {
+    public String newUser(@ModelAttribute("newWorker") @Valid WorkerDTO worker) throws CreateException {
         workerService.saveNewWorker(worker);
         return "redirect:/login";
     }

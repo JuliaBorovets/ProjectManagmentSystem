@@ -1,5 +1,7 @@
 package com.training.demo.service;
 
+import com.training.demo.controllers.exception.CreateException;
+import com.training.demo.controllers.exception.DeleteException;
 import com.training.demo.dto.ProjectDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
@@ -50,27 +52,27 @@ public class ProjectService {
                 .build();
     }
 
-    public void saveNewProject(ProjectDTO project) throws Exception {
+    public void saveNewProject(ProjectDTO project) throws CreateException {
         try {
             projectRepository.save(createProject(project));
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("saveNewProject exception");
+            throw new CreateException("saveNewProject exception");
         }
     }
 
-    public void saveProject(Project project) throws Exception {
+    public void saveProject(Project project) throws CreateException {
         try {
             projectRepository.save(project);
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("saveNewProject exception");
+            throw new CreateException("saveProject exception");
         }
     }
 
-    public void deleteProject(Project project) throws Exception {
+    public void deleteProject(Project project) throws DeleteException {
         try {
             projectRepository.delete(project);
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("saveNewProject exception");
+            throw new DeleteException("saveNewProject exception");
         }
     }
 

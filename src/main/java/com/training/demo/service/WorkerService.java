@@ -1,5 +1,7 @@
 package com.training.demo.service;
 
+import com.training.demo.controllers.exception.CreateException;
+import com.training.demo.controllers.exception.UpdateException;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
@@ -80,7 +82,7 @@ public class WorkerService implements UserDetailsService {
     }
 
 
-    private void createAdmin() throws Exception {
+    private void createAdmin() throws CreateException {
 //        if (!pattern.matcher("admin").matches()) {
 //            throw new IllegalArgumentException("Invalid String");
 //        }
@@ -99,11 +101,11 @@ public class WorkerService implements UserDetailsService {
         try {
             workerRepository.save(admin);
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("Помилка створення адміна");
+            throw new CreateException("Помилка створення адміна");
         }
     }
 
-    public void addWorkerToProject(Worker worker, Project project) throws Exception {
+    public void addWorkerToProject(Worker worker, Project project) throws UpdateException {
         Worker updatedWorker = Worker.builder()
                 .name(worker.getName())
                 .surname(worker.getSurname())
@@ -115,7 +117,7 @@ public class WorkerService implements UserDetailsService {
         try {
             workerRepository.save(updatedWorker);
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("Помилка додавання працівника");
+            throw new UpdateException("Помилка додавання працівника");
         }
 
     }
@@ -126,11 +128,11 @@ public class WorkerService implements UserDetailsService {
 //
 //        return admin.getId();
 //    }
-    public void saveNewWorker(WorkerDTO worker) throws Exception {
+    public void saveNewWorker(WorkerDTO worker) throws CreateException {
         try {
             workerRepository.save(createWorker(worker));
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("saveNewWorker exception");
+            throw new CreateException("saveNewWorker exception");
         }
     }
 

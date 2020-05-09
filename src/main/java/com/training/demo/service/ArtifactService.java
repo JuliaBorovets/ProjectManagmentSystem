@@ -1,5 +1,6 @@
 package com.training.demo.service;
 
+import com.training.demo.controllers.exception.DeleteException;
 import com.training.demo.entity.Artifact;
 import com.training.demo.entity.Task;
 import com.training.demo.repository.ArtifactRepository;
@@ -38,11 +39,11 @@ public class ArtifactService {
         }
     }
 
-    public void deleteArtifact(Artifact artifact) throws Exception {
+    public void deleteArtifact(Artifact artifact) throws DeleteException {
         try {
             artifactRepository.delete(artifact);
         } catch (DataIntegrityViolationException e) {
-            throw new Exception("Помилка видалення артефакту");
+            throw new DeleteException("Помилка видалення артефакту");
         }
     }
 
