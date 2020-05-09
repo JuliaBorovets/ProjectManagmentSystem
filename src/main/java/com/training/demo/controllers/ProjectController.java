@@ -40,6 +40,14 @@ public class ProjectController {
         model.addAttribute("projects", projectService.findProjectsByWorker(worker));
         return "homePage";
     }
+    
+    
+    @GetMapping("/info")
+    public String info( @AuthenticationPrincipal Worker worker,Model model) {
+        model.addAttribute("user_info", worker);
+        model.addAttribute("projects", projectService.findProjectsByWorker(worker));
+        return "info";
+    }
 
     
     private void getProjectById(Model model, Long id) {
