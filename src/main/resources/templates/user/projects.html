@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
-    <title th:text="#{user.home.page}">{user home page}</title>
+    <title th:text="#{user.project.page}">{user project page}</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fonts/ionicons.min.css">
@@ -31,42 +31,74 @@
 
 <br>
 
-<form class="left_projects">
-    <div class="container-fluid">
-        <div class="card shadow">
+<form class="tasks">
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{active.tasks}">tasks</th>
+                <th th:text="#{artifacts}">artifacts</th>
+                <th th:text="#{to.do}">done</th>
+            </tr>
+            </thead>
+            <tbody>
 
-            <div class="card-body">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid"
-                     aria-describedby="dataTable_info">
-                    <table class="table dataTable my-0" id="dataTable">
-                        <thead>
-                        <tr align="center">
-                            <th th:text="#{project.name}"></th>
-                                    <th th:text="#{project.date}"></th>
-                                    <th th:text="#{project.info}"></th>
-                                    <th><em class="fa fa-cog"></em></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="p : ${project}">
-                                    <td align="center" th:text="${p.id}"></td>
-                                    <td align="center" th:text="${p.name}"></td>
-                                    <td align="center" th:text="${p.description}"></td>
+            <tr th:each="t : ${tasks}">
+                <td>
+                    <table class="table table-nostriped">
+                        <tr>
+                            <td th:text="#{number.task}">id</td>
+                            <td th:text="${t.id}">id</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{name.of.task}">name</td>
+                            <td th:text="${t.name}">name</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{description}">description</td>
+                            <td th:text="${t.description}">description</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{deadline}">deadline</td>
+                            <td th:text="${t.deadline}">deadline</td>
+                        </tr>
 
-                                    <td align="center">
-                                        <a class="btn btn-default" href="#"><em class="fa fa-info"></em></a>
-                                    </td>
-                                </tr>
-                                </tbody>
+
                     </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-</form>
+                </td>
+                <td>
 
-<br>
+                    <table class="table table-nostriped">
+                        <tr th:each="ar : ${t.artifacts}">
+                            <td th:text="${ar.name}">name</td>
+                        </tr>
+                    </table>
+
+                </td>
+
+                <td>
+
+                    <table class="table table-nostriped">
+                        <tr>
+                            <td>
+                                <form th:action="@{delete/{id}(id=${t.id})}">
+                                    <form>
+                                        <button class="btn btn-default" type="submit" href="#"><i class="fa fa-bolt"
+                                                                                                  aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</form>
 
 <div th:include="fragments/footer :: footer" th:remove="tag"></div>
 

@@ -6,6 +6,7 @@ import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -13,36 +14,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class PageController {
 
-    private final ProjectService projectService;
     private final WorkerService workerService;
-    private final TaskService taskService;
     private final ArtifactService artifactService;
 
     @Autowired
-    public PageController(ProjectService projectService, WorkerService workerService, TaskService taskService, ArtifactService artifactService) {
-        this.projectService = projectService;
+    public PageController(WorkerService workerService, ArtifactService artifactService) {
         this.workerService = workerService;
-        this.taskService = taskService;
         this.artifactService = artifactService;
     }
 
-     @RequestMapping("/")
-    public String mainPage(Model model) {
-        getAllProjects(model);
-        return "index";
-    }
-    
-    @GetMapping("/home")
-    public String mainPage(Model model, @AuthenticationPrincipal Worker worker) {
-        getAllProjects(model);
-        return "homePage";
-    }
 
     @RequestMapping("/success")
     public String localRedirect() {
@@ -70,20 +56,12 @@ public class PageController {
     }
 
 
-
 //    @GetMapping("/{login}")
 //    public String myProjectsPage( @AuthenticationPrincipal Worker worker,Model model,
 //                                  @PathVariable("login") String login) {
 //        getProjectsByWorkerId(model,worker);
 //        return "my_projects";
 //    }
-
-    @GetMapping("/search/{id}")
-    public String searchProjects(Model model,
-                                 @PathVariable("id") Long id) {
-        getProjectById(model, id);
-        return "search_proj";
-    }
 
 
 //    @GetMapping("/{userName}/{projId}")
@@ -123,37 +101,9 @@ public class PageController {
 //    }
 
 
-    private void getProjectById(Model model, Long id) {
-        model.addAttribute("projectById", projectService.findProjectById(id));
-    }
-
-
-    private void getAllProjects(Model model) {
-        model.addAttribute("project", projectService.getAllProjects());
-    }
-
-    private void saveProject(Project project) throws Exception {
-        projectService.saveProject(project);
-    }
-
-    // тест на видалення проекту
-    @GetMapping("/delete_test")
-    public String projectsPage(Model model, @AuthenticationPrincipal Worker worker) {
-        getAllProjects(model);
-        return "user/index";
-    }
-
-    // видалення проекту
-    @RequestMapping("/delete/{id}")
-    public String deleteProject(Project project, @PathVariable("id") Long id) throws Exception {
-        projectService.deleteProject(project);
-        return "redirect:/delete_test";
-    }
-
-
-    private void addTask(Task task, Project project) {
-        projectService.addTask(task, project);
-    }
+//    private void addTask(Task task, Project project) {
+//        projectService.addTask(task, project);
+//    }
 
     private void addWorkerToProject(Worker worker, Project project) throws Exception {
         workerService.addWorkerToProject(worker, project);
@@ -173,15 +123,6 @@ public class PageController {
         model.addAttribute("workers", workers);
     }
 
-//    private List<Project> getProjectsByWorkerId(Model model, Worker worker) {
-//        List<AssignmentDTO> assignments = assignmentService.findAllAssignByWorkerId(worker.getId());
-//        List<Project> projects = new ArrayList<>();
-//        for (int i = 0; i < assignments.size(); i++) {
-//            Task task = assignments.get(i).getTask();
-//            projects.add(task.getProject());
-//        }
-//        return projects;
-//    }
 
     private List<WorkerDTO> getWorkers(Project project) {
         List<WorkerDTO> workersByProjectId = workerService.findWorkersByProjectId(project);
@@ -189,16 +130,4 @@ public class PageController {
 
     }
 
-    @RequestMapping("/user_projects")
-    public String getUserProjectsPage(Model model) {
-        getAllProjects(model);
-        return "user/projects";
-    }
-
-    @RequestMapping("/user_projects/{id}")
-    public String getProjectsById(Model model, @PathVariable("id") Long id) {
-        Project project = projectService.findProjectById(id);
-        model.addAttribute("projectName", project.getName());
-        return "user/projects";
-    }
 }

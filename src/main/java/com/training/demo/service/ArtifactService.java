@@ -1,6 +1,7 @@
 package com.training.demo.service;
 
 import com.training.demo.entity.Artifact;
+import com.training.demo.entity.Task;
 import com.training.demo.repository.ArtifactRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,8 @@ public class ArtifactService {
         }
     }
 
+    public List<Artifact> findByTask(Task task) {
+        return artifactRepository.findByTask(task);
+    }
 
 }

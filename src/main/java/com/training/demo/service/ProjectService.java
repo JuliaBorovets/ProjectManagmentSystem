@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 //import org.springframework.security.core.parameters.P;
 
@@ -30,15 +31,17 @@ public class ProjectService {
                 .orElseThrow(() -> new RuntimeException("Немає такого проекту"));
     }
 
-    //   public List<ProjectDTO> findProjectsByWorkerId(Long id) {
-//        return projectRepository.find(id).stream()
-//                .map(projects -> ProjectDTO.builder()
-//                        .id(projects.getId())
-//                        .name(projects.getName())
-//                        .surname(projects.getDescription())
-//                        .build()).collect(Collectors.toList());
-//
-//  }
+    public List<ProjectDTO> findProjectsByWorker(Worker worker) {
+        return projectRepository.findByWorkers(worker).stream()
+                .map(projects -> ProjectDTO.builder()
+                        .id(projects.getId())
+                        .name(projects.getName())
+                        .description(projects.getDescription())
+                        .build()).collect(Collectors.toList());
+
+    }
+
+
     private Project createProject(ProjectDTO project) {
         return Project.builder()
                 .name(project.getName())

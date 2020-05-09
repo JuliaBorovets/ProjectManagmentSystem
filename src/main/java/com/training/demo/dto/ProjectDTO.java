@@ -20,16 +20,5 @@ public class ProjectDTO {
     Long id;
     String name;
     String description;
-    Long adminByWorkerId;
     List<Task> tasks;
-
-    public ProjectDTO(Project project) {
-        this.id = project.getId();
-        this.name = project.getName();
-        this.description = project.getDescription();
-//        this.adminByWorkerId = project.getAdminByWorkerId();
-        tasks = new ArrayList<Task>();
-    }
-
-
 }

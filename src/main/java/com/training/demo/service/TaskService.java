@@ -1,11 +1,15 @@
 package com.training.demo.service;
 
+import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
+import com.training.demo.entity.Worker;
 import com.training.demo.repository.TaskRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -38,5 +42,11 @@ public class TaskService {
 //        project.addTask(task);
 //    }
 
+    public List<Task> findByProjectAndWorkers(Project project, Worker worker) {
+        List<Task> tasks = taskRepository.findByProjectAndWorkers(project, worker);
+        log.error(tasks.toString());
+        return tasks;
+
+    }
 }
 

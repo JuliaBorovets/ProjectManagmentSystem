@@ -39,25 +39,19 @@
                 <table class="table dataTable my-0" id="dataTable">
                     <thead>
                     <tr align="center">
+                        <th th:text="#{project.number}"></th>
                         <th th:text="#{project.name}"></th>
-                        <th th:text="#{project.date}"></th>
                         <th th:text="#{project.info}"></th>
                         <th><em class="fa fa-cog"></em></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="p : ${project}">
+                    <tr th:each="p : ${projects}">
                         <td align="center" th:text="${p.id}"></td>
                         <td align="center" th:text="${p.name}"></td>
                         <td align="center" th:text="${p.description}"></td>
 
                         <td align="center">
-                            <form th:action="@{delete/{id}(id=${p.id})}">
-                                <form>
-                                    <button class="btn btn-default" type="submit" href="#"><em class="fa fa-trash"></em>
-                                    </button>
-                                </form>
-                            </form>
                             <a class="btn btn-default" th:href="@{|/user_projects/${p.id}|}"><em
                                     class="fa fa-info"></em></a>
                         </td>

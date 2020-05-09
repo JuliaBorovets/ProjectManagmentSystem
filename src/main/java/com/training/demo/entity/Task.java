@@ -9,7 +9,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @EqualsAndHashCode
 
 @Entity
@@ -26,6 +25,7 @@ public class Task {
 
     private String deadline;
 
+    @Column(columnDefinition = "boolean default false")
     private boolean isDone;
 
     @ManyToMany(mappedBy = "tasks")

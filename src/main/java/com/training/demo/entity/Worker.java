@@ -13,7 +13,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
 @EqualsAndHashCode
 
@@ -46,7 +45,10 @@ public class Worker implements UserDetails {
 
     private boolean enabled;
 
-    @ManyToMany(mappedBy = "workers")
+    @ManyToMany
+    @JoinTable(name = "worker_project",
+            joinColumns = @JoinColumn(name = "worker_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id"))
     private List<Project> projects;
 
 
