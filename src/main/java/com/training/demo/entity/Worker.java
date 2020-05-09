@@ -69,4 +69,6 @@ public class Worker implements UserDetails {
         return getLogin();
     }
 
+    @OneToMany(mappedBy = "admin")
+    private List<Project> adminProjects;
 }

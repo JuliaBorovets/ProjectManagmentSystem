@@ -33,4 +33,7 @@ public class Project {
 
     @ManyToMany(mappedBy = "projects")
     private List<Worker> workers;
+
+    @ManyToOne
+    private Worker admin;
 }

@@ -15,5 +15,5 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     Optional<Project> findByName(String name);
 
-    List<Project> findByWorkers(Worker workers);
+    List<Project> findByWorkersOrAdmin(Worker workers, Worker admin);
 }

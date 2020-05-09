@@ -8,39 +8,34 @@
 </head>
 
 <body>
-<div th:include="fragments/header :: header_user_admin" th:remove="tag"></div>
+<div th:include="fragments/header :: header-logged-user" th:remove="tag"></div>
 
 <div class="column">
     <section class="jumbotron2 text-center">
-
-        <br>
-        <div class="alert" th:if="${error}">
-            <h3 class="black" th:text="#{reg.error.generic}">{Reg error}</h3>
-        </div>
 
 
         <h1 class="calc" th:text="#{create.new.project}">{Створення нового проектy}</h1>
 
         <div class="project">
-            <form id="newProject" name="newProject" action="#" th:action="@{/create}" th:object="${newProject}"
+            <form id="newProject" name="newProject" th:action="@{/create}" th:object="${newProject}"
                   method="post">
                 <br>
 
                 <div>
-
-                    <input type="number" id="name" name="weight" th:field="*{name}" class="weight"
+                    <input type="text" id="name" name="name" th:field="*{name}" class="name"
                            th:placeholder="#{new.project.name}" required>
                 </div>
-
                 <br>
 
+                <div>
+                    <input type="text" id="description" name="description" th:field="*{description}" class="description"
+                           th:placeholder="#{description}" required>
+                </div>
                 <br>
-
-
 
                 <br>
                 <form>
-                    <input class="calculate waves-effect waves-light" type="submit" value="Submit">
+                    <input class="btn btn-default waves-effect waves-light" type="submit" value="Submit">
                 </form>
                 <br>
 

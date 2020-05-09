@@ -34,7 +34,7 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> findProjectsByWorker(Worker worker) {
-        return projectRepository.findByWorkers(worker).stream()
+        return projectRepository.findByWorkersOrAdmin(worker, worker).stream()
                 .map(projects -> ProjectDTO.builder()
                         .id(projects.getId())
                         .name(projects.getName())
@@ -44,17 +44,19 @@ public class ProjectService {
     }
 
 
-    private Project createProject(ProjectDTO project) {
+    private Project createProject(ProjectDTO project, Worker worker) {
+
         return Project.builder()
                 .name(project.getName())
+                .admin(worker)
                 .description(project.getDescription())
                 .tasks(project.getTasks())
                 .build();
     }
 
-    public void saveNewProject(ProjectDTO project) throws CreateException {
+    public void saveNewProject(ProjectDTO project, Worker admin) throws CreateException {
         try {
-            projectRepository.save(createProject(project));
+            projectRepository.save(createProject(project, admin));
         } catch (DataIntegrityViolationException e) {
             throw new CreateException("saveNewProject exception");
         }

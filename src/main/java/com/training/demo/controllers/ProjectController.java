@@ -1,5 +1,8 @@
 package com.training.demo.controllers;
 
+import com.training.demo.controllers.exception.CreateException;
+import com.training.demo.dto.ProjectDTO;
+import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.ProjectService;
@@ -8,10 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
@@ -79,11 +81,19 @@ public class ProjectController {
         return "redirect:/home";
     }
 
-    @RequestMapping("/new_project")
-    public String createProject(Model model) {
+    @GetMapping("/create")
+    public String createProject(@ModelAttribute("newProject") ProjectDTO projectDTO, Model model) {
+
+        model.addAttribute("newProject", projectDTO == null ? new ProjectDTO() : projectDTO);
         return "new_project";
     }
 
+    @PostMapping("/create")
+    public String createProject(@ModelAttribute("newProject") @Valid ProjectDTO projectDTO,
+                                @AuthenticationPrincipal Worker worker) throws CreateException {
+        projectService.saveNewProject(projectDTO, worker);
+        return "redirect:/home";
+    }
 
 }
 
