@@ -79,6 +79,11 @@ public class ProjectController {
         return "redirect:/home";
     }
 
+    @RequestMapping("/new_project")
+    public String createProject(Model model) {
+        return "new_project";
+    }
+
 
 }
 
