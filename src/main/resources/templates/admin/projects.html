@@ -32,6 +32,11 @@
 
 <br>
 
+<div class="alert" th:if="${error}">
+    <h3 class="black" th:text="#{reg.error.generic}">{Reg error}</h3>
+</div>
+
+
 <h2 class="info" th:text="#{artifacts}"><span>{artifacts}</span></h2>
 
 <div class="container-fluid">
@@ -106,7 +111,7 @@
     </div>
 </section>
 
-
+<br>
 <h2 class="info" th:text="#{workers}"><span>{workers}</span></h2>
 
 <div class="container-fluid">
@@ -149,40 +154,36 @@
 
 </div>
 
-<!--        <section class="jumbotron2 text-center">-->
-<!--            <div class="project">-->
-<!--                <form id="newArtifact" name="newArtifact" th:action="@{/admin/{pid}/create_artifact(pid=${project.id})}" th:object="${newArtifact}"-->
-<!--                      method="post">-->
-<!--                    <br>-->
 
-<!--                    <div class="input_text">-->
-<!--                        <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="name"-->
-<!--                               th:placeholder="#{artifacts.name}" required>-->
-<!--                    </div>-->
-<!--                    <br>-->
+<section class="jumbotron2 text-center">
+    <div class="project">
+        <form id="newWorker" name="newWorker" th:action="@{/admin/{pid}/create_worker(pid=${project.id})}"
+              th:object="${newWorker}" method="post">
+            <br>
 
-<!--                    <div class="input_text">-->
-<!--                        <input type="text" id="type" name="type" size="100px" th:field="*{type}" class="type"-->
-<!--                               th:placeholder="#{artifacts.type}" required>-->
-<!--                    </div>-->
-<!--                    <br>-->
+            <div class="input_text">
+                <input type="number" id="id" name="id" size="100px" th:field="*{id}" class="id"
+                       th:placeholder="'ID'" required>
+            </div>
+            <br>
 
-<!--                    <div class="input_text">-->
-<!--                        <input type="text" id="content" name="content" size="100px" th:field="*{content}" class="content"-->
-<!--                               th:placeholder="#{artifacts.content}" required>-->
-<!--                    </div>-->
-<!--                    <br>-->
-<!--                    <div>-->
-<!--                        <input class="button_create btn-primary " type="submit" />-->
-<!--                    </div>-->
-<!--                    <br>-->
+            <br>
 
-<!--                    <br>-->
+            <div class="input_text">
+                <input type="text" id="login" name="login" size="100px" th:field="*{login}" class="login"
+                       th:placeholder="#{worker.login}" required>
+            </div>
+            <br>
+            <div>
+                <input class="button_create btn-primary " type="submit"/>
+            </div>
+            <br>
 
+            <br>
 
-<!--                </form>-->
-<!--            </div>-->
-<!--        </section>-->
+        </form>
+    </div>
+</section>
 
 
 <br>

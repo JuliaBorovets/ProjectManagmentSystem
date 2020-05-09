@@ -1,10 +1,7 @@
 package com.training.demo.controllers;
 
 
-import com.training.demo.controllers.exception.CreateException;
-import com.training.demo.controllers.exception.DeleteException;
-import com.training.demo.controllers.exception.RegisterException;
-import com.training.demo.controllers.exception.UpdateException;
+import com.training.demo.controllers.exception.*;
 import com.training.demo.dto.WorkerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -59,6 +56,13 @@ public class ExceptionHandlers {
     @ExceptionHandler(DeleteException.class)
     public String handleDeleteException() {
         log.error("Delete exception");
+        return "redirect:/home";
+    }
+
+    @ExceptionHandler(CanNotFoundException.class)
+    public String handleCanNotFoundException(Model model) {
+        log.error("CanNotFoundException Exception");
+        model.addAttribute("error", true);
         return "redirect:/home";
     }
 

@@ -1,7 +1,9 @@
 package com.training.demo.service;
 
+import com.training.demo.controllers.exception.CanNotFoundException;
 import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.controllers.exception.DeleteException;
+import com.training.demo.dto.AddWorkerDTO;
 import com.training.demo.dto.ProjectDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
@@ -10,12 +12,11 @@ import com.training.demo.repository.ProjectRepository;
 import com.training.demo.repository.WorkerRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-//import org.springframework.security.core.parameters.P;
 
 @Service
 public class ProjectService {
@@ -30,14 +31,14 @@ public class ProjectService {
         this.workerRepository = workerRepository;
     }
 
-    public Project findProjectById(Long id) {
+    public Project findProjectById(Long id) throws CanNotFoundException {
         return projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Немає такого проекту"));
+                .orElseThrow(() -> new CanNotFoundException("Немає такого проекту"));
     }
 
-    public Project findProjectByName(String name) {
+    public Project findProjectByName(String name) throws CanNotFoundException {
         return projectRepository.findByName(name)
-                .orElseThrow(() -> new RuntimeException("Немає такого проекту"));
+                .orElseThrow(() -> new CanNotFoundException("Немає такого проекту"));
     }
 
     public List<ProjectDTO> findProjectsByWorker(Worker worker) {
@@ -47,7 +48,6 @@ public class ProjectService {
                         .name(projects.getName())
                         .description(projects.getDescription())
                         .build()).collect(Collectors.toList());
-
     }
 
 
@@ -96,11 +96,12 @@ public class ProjectService {
         tasks.add(task);
     }
 
-    @Transactional
-    public void deleteWorkerFromProject(Long projectId, Long workerId) {
+    @Transactional(propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
+    public void deleteWorkerFromProject(Long projectId, Long workerId) throws CanNotFoundException {
         Project project = projectRepository
                 .findById(projectId)
-                .orElseThrow(() -> new RuntimeException("can not find project"));
+                .orElseThrow(() -> new CanNotFoundException("can not find project"));
         Worker worker = workerService.findWorkerById(workerId);
         List<Project> workerProjects = worker.getProjects();
         List<Worker> workersList = project.getWorkers();
@@ -112,4 +113,25 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
+    public void addWorkerToProject(AddWorkerDTO workerDTO, Long projectId) throws CanNotFoundException {
+        Worker worker = workerRepository
+                .findByIdAndLogin(workerDTO.getId(), workerDTO.getLogin())
+                .orElseThrow(() -> new CanNotFoundException("can not find worker"));
+
+        Project project = projectRepository
+                .findById(projectId)
+                .orElseThrow(() -> new CanNotFoundException("can not fnd project"));
+
+        List<Project> workerProjects = worker.getProjects();
+        List<Worker> projectWorkers = project.getWorkers();
+
+        workerProjects.add(project);
+        projectWorkers.add(worker);
+
+        workerRepository.save(worker);
+        projectRepository.save(project);
+    }
 }

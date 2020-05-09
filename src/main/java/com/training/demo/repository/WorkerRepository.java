@@ -19,5 +19,7 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
 
     List<Worker> findWorkersByProjects(Project project);
 
+    Optional<Worker> findByIdAndLogin(Long id, String login);
+
 
 }
