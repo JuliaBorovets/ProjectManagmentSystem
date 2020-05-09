@@ -3,20 +3,28 @@ package com.training.demo.service;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
+import com.training.demo.repository.ProjectRepository;
 import com.training.demo.repository.TaskRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final ProjectRepository projectRepository;
 
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository) {
         this.taskRepository = taskRepository;
+        this.projectRepository = projectRepository;
     }
 
     public Task findTaskById(Long id) {
@@ -44,9 +52,22 @@ public class TaskService {
 
     public List<Task> findByProjectAndWorkers(Project project, Worker worker) {
         List<Task> tasks = taskRepository.findByProjectAndWorkers(project, worker);
+
         log.error(tasks.toString());
-        return tasks;
+        return tasks.stream()
+                .filter(t -> !t.isDone())
+                .sorted(Comparator.comparing(Task::getId))
+                .collect(Collectors.toList());
 
     }
+
+    public void makeTaskDone(Long id) {
+        Task task = taskRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("no task found"));
+        task.setDone(true);
+        taskRepository.save(task);
+    }
+
 }
 

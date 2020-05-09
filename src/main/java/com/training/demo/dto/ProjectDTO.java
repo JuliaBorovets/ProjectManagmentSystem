@@ -18,7 +18,10 @@ import java.util.List;
 public class ProjectDTO {
 
     Long id;
+
     String name;
+
     String description;
+
     List<Task> tasks;
 }

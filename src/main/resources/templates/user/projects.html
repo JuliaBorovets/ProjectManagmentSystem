@@ -31,8 +31,9 @@
 
 <br>
 
-<form class="tasks">
+<section>
     <div class="container">
+        
         <table class="table table-striped">
             <thead>
             <tr>
@@ -44,6 +45,7 @@
             <tbody>
 
             <tr th:each="t : ${tasks}">
+
                 <td>
                     <table class="table table-nostriped">
                         <tr>
@@ -76,20 +78,25 @@
 
                 </td>
 
+
                 <td>
 
                     <table class="table table-nostriped">
+
                         <tr>
                             <td>
-                                <form th:action="@{delete/{id}(id=${t.id})}">
-                                    <form>
-                                        <button class="btn btn-default" type="submit" href="#"><i class="fa fa-bolt"
-                                                                                                  aria-hidden="true"></i>
-                                        </button>
+                                <div>
+                                    <form th:action="@{/do_task/{id}(id=${t.id})}">
+                                        <form>
+                                            <button class="btn btn-default" type="submit" href="#">
+                                                <i class="fa fa-bolt" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
                                     </form>
-                                </form>
+                                </div>
                             </td>
                         </tr>
+
                     </table>
 
                 </td>
@@ -98,7 +105,7 @@
             </tbody>
         </table>
     </div>
-</form>
+</section>
 
 <div th:include="fragments/footer :: footer" th:remove="tag"></div>
 

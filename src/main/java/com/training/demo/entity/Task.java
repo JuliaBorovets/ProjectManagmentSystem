@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
+@Builder
 
 @Entity
 @Table(name = "task")
@@ -26,7 +27,7 @@ public class Task {
     private String deadline;
 
     @Column(columnDefinition = "boolean default false")
-    private boolean isDone;
+    private boolean done;
 
     @ManyToMany(mappedBy = "tasks")
     private List<Worker> workers;

@@ -25,8 +25,10 @@ public class TaskDTO {
     String deadline;
 
     Boolean isDone;
+
     Project project;
 
     List<Worker> workers;
+
 
 }

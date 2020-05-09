@@ -128,7 +128,6 @@ public class PageController {
     private List<WorkerDTO> getWorkers(Project project) {
         List<WorkerDTO> workersByProjectId = workerService.findWorkersByProjectId(project);
         return workersByProjectId;
-
     }
 
 }

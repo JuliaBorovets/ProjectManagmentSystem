@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Slf4j
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ProjectController {
     private final ProjectService projectService;
     private final TaskService taskService;
-
 
     public ProjectController(ProjectService projectService, TaskService taskService) {
         this.projectService = projectService;
@@ -66,11 +66,19 @@ public class ProjectController {
 //    }
 
     @RequestMapping("/user_projects/{id}")
-    public String getProjectsById(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker) {
+    public String getProjectById(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker) {
         Project project = projectService.findProjectById(id);
         model.addAttribute("projectName", project.getName());
         model.addAttribute("tasks", taskService.findByProjectAndWorkers(project, worker));
         return "user/projects";
     }
+
+    @GetMapping("/do_task/{id}")
+    public String makeTaskDone(Model model, @PathVariable("id") Long id) {
+        taskService.makeTaskDone(id);
+        return "redirect:/home";
+    }
+
+
 }
 

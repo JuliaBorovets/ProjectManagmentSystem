@@ -52,7 +52,7 @@ public class Worker implements UserDetails {
     private List<Project> projects;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "worker_task",
             joinColumns = @JoinColumn(name = "worker_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
