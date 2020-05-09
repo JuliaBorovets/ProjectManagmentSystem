@@ -45,7 +45,7 @@ public class Worker implements UserDetails {
 
     private boolean enabled;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     @JoinTable(name = "worker_project",
             joinColumns = @JoinColumn(name = "worker_id"),
             inverseJoinColumns = @JoinColumn(name = "project_id"))

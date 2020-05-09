@@ -19,4 +19,5 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
 
     List<Worker> findWorkersByProjects(Project project);
 
+
 }

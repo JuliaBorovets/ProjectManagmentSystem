@@ -110,9 +110,9 @@ public class PageController {
         workerService.addWorkerToProject(worker, project);
     }
 
-    private void addArtifact(Artifact artifact) throws Exception {
-        artifactService.addArtifact(artifact);
-    }
+//    private void addArtifact(Artifact artifact) throws Exception {
+//        artifactService.addArtifact(artifact);
+//    }
 
     private void deleteArtifact(Artifact artifact) throws Exception {
         artifactService.deleteArtifact(artifact);

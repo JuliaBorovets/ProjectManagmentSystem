@@ -7,8 +7,10 @@ import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import com.training.demo.repository.ProjectRepository;
+import com.training.demo.repository.WorkerRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,10 +19,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
-    private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
+    private final ProjectRepository projectRepository;
+    private final WorkerService workerService;
+    private final WorkerRepository workerRepository;
+
+    public ProjectService(ProjectRepository projectRepository, WorkerService workerService, WorkerRepository workerRepository) {
         this.projectRepository = projectRepository;
+        this.workerService = workerService;
+        this.workerRepository = workerRepository;
     }
 
     public Project findProjectById(Long id) {
@@ -87,6 +94,22 @@ public class ProjectService {
         Project project1 = projectRepository.findById(project.getId()).orElseThrow(() -> new RuntimeException("no project"));
         List<Task> tasks = project1.getTasks();
         tasks.add(task);
+    }
+
+    @Transactional
+    public void deleteWorkerFromProject(Long projectId, Long workerId) {
+        Project project = projectRepository
+                .findById(projectId)
+                .orElseThrow(() -> new RuntimeException("can not find project"));
+        Worker worker = workerService.findWorkerById(workerId);
+        List<Project> workerProjects = worker.getProjects();
+        List<Worker> workersList = project.getWorkers();
+
+        workerProjects.remove(project);
+        workerRepository.save(worker);
+
+        workersList.remove(worker);
+        projectRepository.save(project);
     }
 
 }

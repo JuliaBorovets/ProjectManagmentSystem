@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -37,6 +38,7 @@ public class WorkerService implements UserDetailsService {
     public List<WorkerDTO> findWorkersByProjectId(Project project) {
         return workerRepository.findWorkersByProjects(project).stream()
                 .map(worker -> WorkerDTO.builder()
+                        .id(worker.getId())
                         .name(worker.getName())
                         .surname(worker.getSurname())
                         .email(worker.getEmail())
@@ -142,4 +144,5 @@ public class WorkerService implements UserDetailsService {
         log.error(login);
         return workerRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(login));
     }
+
 }

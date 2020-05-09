@@ -1,6 +1,7 @@
 package com.training.demo.service;
 
 import com.training.demo.controllers.exception.DeleteException;
+import com.training.demo.dto.ArtifactDTO;
 import com.training.demo.entity.Artifact;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
@@ -8,7 +9,10 @@ import com.training.demo.repository.ArtifactRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArtifactService {
@@ -29,9 +33,10 @@ public class ArtifactService {
         return (List<Artifact>) artifactRepository.findAll();
     }
 
-    public void addArtifact(Artifact artifact) throws Exception {
+    public void addArtifact(ArtifactDTO artifact, Project project) throws Exception {
         Artifact updatedArtifact = Artifact.builder()
                 .name(artifact.getName())
+                .project(project)
                 .type(artifact.getType())
                 .content(artifact.getContent())
                 .build();
