@@ -5,6 +5,7 @@ import com.training.demo.dto.ProjectDTO;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
+import com.training.demo.service.ArtifactService;
 import com.training.demo.service.ProjectService;
 import com.training.demo.service.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +21,12 @@ import javax.validation.Valid;
 public class ProjectController {
     private final ProjectService projectService;
     private final TaskService taskService;
+    private final ArtifactService artifactService;
 
-    public ProjectController(ProjectService projectService, TaskService taskService) {
+    public ProjectController(ProjectService projectService, TaskService taskService, ArtifactService artifactService) {
         this.projectService = projectService;
         this.taskService = taskService;
+        this.artifactService = artifactService;
     }
 
     @RequestMapping("/")

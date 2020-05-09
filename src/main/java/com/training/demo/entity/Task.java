@@ -35,6 +35,6 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "task")
+    @OneToMany(mappedBy = "task")
     private List<Artifact> artifacts;
 }

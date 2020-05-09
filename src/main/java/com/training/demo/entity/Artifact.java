@@ -30,4 +30,7 @@ public class Artifact {
     @ManyToOne
     private Task task;
 
+    @ManyToOne
+    private Project project;
+
 }

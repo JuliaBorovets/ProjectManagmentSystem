@@ -36,4 +36,7 @@ public class Project {
 
     @ManyToOne
     private Worker admin;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    private List<Artifact> artifacts;
 }

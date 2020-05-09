@@ -2,6 +2,7 @@ package com.training.demo.service;
 
 import com.training.demo.controllers.exception.DeleteException;
 import com.training.demo.entity.Artifact;
+import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.repository.ArtifactRepository;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -12,9 +13,11 @@ import java.util.List;
 @Service
 public class ArtifactService {
     private final ArtifactRepository artifactRepository;
+    private final ProjectService projectService;
 
-    public ArtifactService(ArtifactRepository artifactRepository) {
+    public ArtifactService(ArtifactRepository artifactRepository, ProjectService projectService) {
         this.artifactRepository = artifactRepository;
+        this.projectService = projectService;
     }
 
     public Artifact findArtifactById(Long id) {
@@ -49,6 +52,16 @@ public class ArtifactService {
 
     public List<Artifact> findByTask(Task task) {
         return artifactRepository.findByTask(task);
+    }
+
+    public List<Artifact> findArtifactsByProjectId(Long id) {
+        Project project = projectService.findProjectById(id);
+        return artifactRepository.findByProject(project);
+    }
+
+    public void deleteArtifact(Long id) {
+        Artifact artifact = artifactRepository.findById(id).orElseThrow(() -> new RuntimeException("no artifact"));
+        artifactRepository.delete(artifact);
     }
 
 }
