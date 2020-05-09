@@ -2,48 +2,54 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>New order</title>
+    <base href="/">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/homePage.css">
 </head>
 
 <body>
-<div th:include="fragments/header :: header-logged-user" th:remove="tag"></div>
+<div th:include="fragments/header :: header-home-page" th:remove="tag"></div>
 
 <div class="column">
     <section class="jumbotron2 text-center">
 
+        <br>
+        <br>
 
         <h1 class="calc" th:text="#{create.new.project}">{Створення нового проектy}</h1>
 
-        <div class="project">
-            <form id="newProject" name="newProject" th:action="@{/create}" th:object="${newProject}"
-                  method="post">
-                <br>
+        <section class="jumbotron2 text-center">
+            <div class="project">
+                <form id="newProject" name="newProject" th:action="@{/create}" th:object="${newProject}"
+                      method="post">
+                    <br>
 
-                <div>
-                    <input type="text" id="name" name="name" th:field="*{name}" class="name"
-                           th:placeholder="#{new.project.name}" required>
-                </div>
-                <br>
+                    <div class="input_text">
+                        <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="name"
+                               th:placeholder="#{new.project.name}" required>
+                    </div>
+                    <br>
 
-                <div>
-                    <input type="text" id="description" name="description" th:field="*{description}" class="description"
-                           th:placeholder="#{description}" required>
-                </div>
-                <br>
+                    <div class="input_text">
+                        <input type="text" id="description" name="description" size="100px" th:field="*{description}"
+                               class="description"
+                               th:placeholder="#{description}" required>
+                    </div>
+                    <br>
 
-                <br>
-                <form>
-                    <input class="btn btn-default waves-effect waves-light" type="submit" value="Submit">
+                    <br>
+                    <div>
+                        <input class="button_create btn-primary " type="submit" th:value="#{create}"/>
+                    </div>
+                    <br>
+
+                    <br>
+
+
                 </form>
-                <br>
-
-                <br>
-
-
-            </form>
-        </div>
+            </div>
+        </section>
     </section>
 </div>
 <div th:include="fragments/footer :: footer" th:remove="tag"></div>

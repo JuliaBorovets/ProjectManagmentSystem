@@ -123,3 +123,23 @@ body {
     position: center;
     text-align: center;
 }
+
+
+.button_create {
+    height: 35px;
+    width: 120px;
+    font-size: 20px;
+    background: #214a80;
+    text-align: center;
+
+}
+
+.input_text {
+
+    margin-left: 5%;
+    text-align: center;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+    font-size: 18px;
+    width: 90%;
+    color: #60666d;
+}
