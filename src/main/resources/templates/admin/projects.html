@@ -15,7 +15,7 @@
           href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/css/userHomePage.css">
+    <link rel="stylesheet" href="/css/adminPage.css">
 
 </head>
 
@@ -83,19 +83,19 @@
             <br>
 
             <div class="input_text">
-                <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="name"
+                <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="input_text"
                        th:placeholder="#{artifacts.name}" required>
             </div>
             <br>
 
             <div class="input_text">
-                <input type="text" id="type" name="type" size="100px" th:field="*{type}" class="type"
+                <input type="text" id="type" name="type" size="100px" th:field="*{type}" class="input_text"
                        th:placeholder="#{artifacts.type}" required>
             </div>
             <br>
 
             <div class="input_text">
-                <input type="text" id="content" name="content" size="100px" th:field="*{content}" class="content"
+                <input type="text" id="content" name="content" size="100px" th:field="*{content}" class="input_text"
                        th:placeholder="#{artifacts.content}" required>
             </div>
             <br>
@@ -163,10 +163,8 @@
 
             <div class="input_text">
                 <input type="number" id="id" name="id" size="100px" th:field="*{id}" class="id"
-                       th:placeholder="'ID'" required>
+                       th:placeholder="#{user.id}" required>
             </div>
-            <br>
-
             <br>
 
             <div class="input_text">
