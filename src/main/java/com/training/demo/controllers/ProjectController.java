@@ -38,14 +38,7 @@ public class ProjectController {
         return "homePage";
     }
 
-    @GetMapping("/search/{id}")
-    public String searchProjects(Model model,
-                                 @PathVariable("id") Long id) {
-        getProjectById(model, id);
-        return "search_proj";
-    }
-
-
+    
     private void getProjectById(Model model, Long id) {
         model.addAttribute("projectById", projectService.findProjectById(id));
     }
@@ -79,6 +72,16 @@ public class ProjectController {
     public String makeTaskDone(Model model, @PathVariable("id") Long id) {
         taskService.makeTaskDone(id);
         return "redirect:/home";
+        
+    }
+    
+    @GetMapping("/search/{id}")
+    public String searchProjects(Model model,@PathVariable("id") Long id) {
+        Project project = projectService.findProjectById(id);
+        model.addAttribute("projectName",project.getName());
+        model.addAttribute("tasks", taskService.getAllTasks());
+        //model.addAttribute("project", project);
+        return "user/projects";
     }
 
     @GetMapping("/create")
