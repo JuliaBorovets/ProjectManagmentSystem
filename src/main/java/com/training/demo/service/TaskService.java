@@ -155,7 +155,7 @@ public class TaskService {
     
         public List<Task> findDoneTasksByWorker(Worker worker) {
         List<Task> tasks = worker.getTasks();
-        log.error(tasks.toString());
+        log.error(tasks.get(0).toString());
         return tasks.stream()
                 .filter(Task::isDone)
                 .sorted(Comparator.comparing(Task::getId))
