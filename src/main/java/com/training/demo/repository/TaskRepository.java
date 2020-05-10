@@ -17,7 +17,10 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
     List<Task> findByProjectAndWorkers(Project project, Worker workers);
 
+
     List<Task> findByProject(Project project);
+
+    List<Task> findByWorkers(Worker worker);
 
     void deleteById(Long id);
 }
