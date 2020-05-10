@@ -1,6 +1,5 @@
 package com.training.demo.service;
 
-import com.training.demo.controllers.exception.CanNotFoundException;
 import com.training.demo.controllers.exception.DeleteException;
 import com.training.demo.dto.ArtifactDTO;
 import com.training.demo.entity.Artifact;
@@ -60,7 +59,7 @@ public class ArtifactService {
         return artifactRepository.findByTask(task);
     }
 
-    public List<Artifact> findArtifactsByProjectId(Long id) throws CanNotFoundException {
+    public List<Artifact> findArtifactsByProjectId(Long id) {
         Project project = projectService.findProjectById(id);
         return artifactRepository.findByProject(project);
     }

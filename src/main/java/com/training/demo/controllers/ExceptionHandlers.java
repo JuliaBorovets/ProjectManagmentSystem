@@ -1,7 +1,10 @@
 package com.training.demo.controllers;
 
 
-import com.training.demo.controllers.exception.*;
+import com.training.demo.controllers.exception.CreateException;
+import com.training.demo.controllers.exception.DeleteException;
+import com.training.demo.controllers.exception.RegisterException;
+import com.training.demo.controllers.exception.UpdateException;
 import com.training.demo.dto.WorkerDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
@@ -14,13 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ExceptionHandlers {
 
-//    @ExceptionHandler(Exception.class)
-//    public ModelAndView handleApplicationException() {
-//        log.error("global exception");
-//        ModelAndView modelAndView = new ModelAndView("index");
-//        modelAndView.addObject("error", true);
-//        return modelAndView;
-//    }
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleApplicationException() {
+        log.error("global exception");
+        ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("error", true);
+        return modelAndView;
+    }
 
 
     @ExceptionHandler({org.springframework.validation.BindException.class, IllegalStateException.class})
@@ -56,13 +59,6 @@ public class ExceptionHandlers {
     @ExceptionHandler(DeleteException.class)
     public String handleDeleteException() {
         log.error("Delete exception");
-        return "redirect:/home";
-    }
-
-    @ExceptionHandler(CanNotFoundException.class)
-    public String handleCanNotFoundException(Model model) {
-        log.error("CanNotFoundException Exception");
-        model.addAttribute("error", true);
         return "redirect:/home";
     }
 

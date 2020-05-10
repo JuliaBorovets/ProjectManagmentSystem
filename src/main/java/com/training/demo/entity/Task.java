@@ -3,7 +3,6 @@ package com.training.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -25,7 +24,7 @@ public class Task {
 
     private String description;
 
-    private LocalDate deadline;
+    private String deadline;
 
     @Column(columnDefinition = "boolean default false")
     private boolean done;
@@ -36,6 +35,6 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
 
-    @OneToMany(mappedBy = "task", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    @OneToMany(mappedBy = "task")
     private List<Artifact> artifacts;
 }

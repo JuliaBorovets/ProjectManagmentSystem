@@ -4,7 +4,6 @@ import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,8 +15,5 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
     Optional<Task> findById(Long id);
 
     List<Task> findByProjectAndWorkers(Project project, Worker workers);
-
-    List<Task> findByProject(Project project);
-
-    void deleteById(Long id);
+    //List<Task> findByWorker(Worker workers);
 }
