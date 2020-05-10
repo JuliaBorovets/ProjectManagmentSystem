@@ -1,7 +1,9 @@
 package com.training.demo.controllers;
 
+import com.training.demo.controllers.exception.CanNotFoundException;
 import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.dto.ProjectDTO;
+import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.ArtifactService;
@@ -48,17 +50,8 @@ public class ProjectController {
         return "info";
     }
 
-    @GetMapping("/done_tasks")
-    public String done_tasks(@AuthenticationPrincipal Worker worker, Model model) {
-        model.addAttribute("user_info", worker);
-        //model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
-        //model.addAttribute("tasks", taskService.findDoneTasksByWorker((long) 1,worker));
-       // model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
-        return "done_tasks";
-        }
 
-    
-    private void getProjectById(Model model, Long id) {
+    private void getProjectById(Model model, Long id) throws CanNotFoundException {
         model.addAttribute("projectById", projectService.findProjectById(id));
     }
 
@@ -80,7 +73,8 @@ public class ProjectController {
 //    }
 
     @RequestMapping("/user_projects/{id}")
-    public String getProjectById(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker) {
+    public String getProjectById(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker)
+            throws CanNotFoundException {
         Project project = projectService.findProjectById(id);
         model.addAttribute("projectName", project.getName());
         model.addAttribute("tasks", taskService.findByProjectAndWorkers(project, worker));
@@ -93,17 +87,15 @@ public class ProjectController {
         return "redirect:/home";
         
     }
-    
+
     @GetMapping("/search/{id}")
-    public String searchProjects(Model model,@PathVariable("id") Long id) {
+    public String searchProjects(Model model, @PathVariable("id") Long id) throws CanNotFoundException {
         Project project = projectService.findProjectById(id);
-        model.addAttribute("projectName",project.getName());
+        model.addAttribute("projectName", project.getName());
         model.addAttribute("tasks", taskService.getAllTasks());
         //model.addAttribute("project", project);
         return "user/projects";
     }
-
-
 
     @GetMapping("/create")
     public String createProject(@ModelAttribute("newProject") ProjectDTO projectDTO, Model model) {
@@ -118,8 +110,6 @@ public class ProjectController {
         projectService.saveNewProject(projectDTO, worker);
         return "redirect:/home";
     }
-
-
 
 }
 

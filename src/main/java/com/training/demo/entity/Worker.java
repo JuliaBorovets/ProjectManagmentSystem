@@ -52,7 +52,7 @@ public class Worker implements UserDetails {
     private List<Project> projects;
 
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
+    @ManyToMany
     @JoinTable(name = "worker_task",
             joinColumns = @JoinColumn(name = "worker_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
@@ -71,4 +71,12 @@ public class Worker implements UserDetails {
 
     @OneToMany(mappedBy = "admin")
     private List<Project> adminProjects;
+
+    @Override
+    public String toString() {
+        return "Worker{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                '}';
+    }
 }
