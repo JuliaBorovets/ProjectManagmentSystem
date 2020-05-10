@@ -87,6 +87,15 @@ public class ProjectController {
         return "redirect:/home";
         
     }
+    
+     @GetMapping("/done_tasks")
+    public String done_tasks(@AuthenticationPrincipal Worker worker, Model model) {
+        model.addAttribute("user_info", worker);
+        model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
+        //model.addAttribute("tasks", taskService.findDoneTasksByWorker((long) 1,worker));
+       // model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
+        return "done_tasks";
+        }
 
     @GetMapping("/search/{id}")
     public String searchProjects(Model model, @PathVariable("id") Long id) throws CanNotFoundException {
