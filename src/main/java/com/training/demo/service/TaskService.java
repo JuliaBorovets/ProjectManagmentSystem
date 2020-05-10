@@ -152,5 +152,15 @@ public class TaskService {
         taskWorkers.remove(worker);
         workerRepository.save(worker);
     }
+    
+        public List<Task> findDoneTasksByWorker(Worker worker) {
+        List<Task> tasks = worker.getTasks();
+        log.error(tasks.toString());
+        return tasks.stream()
+                .filter(Task::isDone)
+                .sorted(Comparator.comparing(Task::getId))
+                .collect(Collectors.toList());
+    }
+
 
 }
