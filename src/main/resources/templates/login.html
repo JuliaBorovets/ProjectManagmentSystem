@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title th:text="#{login.page}">Login page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="/css/loginForm.css">
+</head>
+
+<body class="text-center">
+<div class="alert" th:if="${error}">
+    <h3 class="black" th:text="#{login.error}">{Login error}</h3>
+</div>
+
+<div class="login-dark">
+
+
+    <form class="reg" method="post">
+
+        <div class="illustration">
+            <i class="icon ion-ios-locked-outline"></i>
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="text" name="username" id="username" th:placeholder="#{enter.login}">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type="password" id="password" name="password"
+                   th:placeholder="#{enter.password}">
+        </div>
+
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden">
+
+        <div class="form-group">
+            <input class="btn btn-primary btn-block" type="submit" th:value="#{login}"/>
+            <a class="btn btn-primary btn-block" type="submit" th:text="#{register}" href="/reg"> Register </a>
+        </div>
+    </form>
+</div>
+
+</body>
+
+</html>

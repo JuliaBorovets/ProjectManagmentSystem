@@ -1,0 +1,54 @@
+<div th:fragment="header-logged-user" >
+    <nav class="navbar navbar-dark navbar-expand-md" id="app-navbar">
+
+            <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navcol-1">
+
+                <div class="float-left float-md-right mt-5 mt-md-0 search-area">
+
+                    <i class="fa fa-search float-left search-icon"></i>
+                    <input class="float-left float-sm-right custom-search-input" type="search" th:placeholder="#{search}" />
+                </div>
+
+                <ul class="nav navbar-nav ml-auto">
+
+
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="/info"  th:text="#{user.info}">{User info}</a>
+                     </li>
+
+
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="/logout" th:text="#{logout}">{Logout}</a>
+                    </li>
+
+
+                </ul>
+        </div>
+    </nav>
+</div>
+
+<div th:fragment="header-home-page" >
+
+    <nav class="navbar navbar-dark navbar-expand-md" id="app-navbar">
+
+
+            <div class="collapse navbar-collapse" id="navcol-1">
+
+                <ul class="nav navbar-nav ml-auto">
+
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" href="/login" th:text="#{login}">{Login}</a>
+                    </li>
+
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" href="/register" th:text="#{register}">{Registration}</a>
+                    </li>
+
+                </ul>
+            </div>
+    </nav>
+</div>

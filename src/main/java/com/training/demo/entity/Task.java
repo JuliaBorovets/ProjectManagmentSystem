@@ -3,15 +3,15 @@ package com.training.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @EqualsAndHashCode
+@Builder
 
 @Entity
 @Table(name = "task")
@@ -19,26 +19,23 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "deadline")
-    private String deadline;
+    private LocalDate deadline;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
+    @Column(columnDefinition = "boolean default false")
+    private boolean done;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
-    private List<Association> associations;
+    @ManyToMany(mappedBy = "tasks")
+    private List<Worker> workers;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
     private Project project;
 
+    @OneToMany(mappedBy = "task", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Artifact> artifacts;
 }

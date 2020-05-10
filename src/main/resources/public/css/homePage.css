@@ -1,0 +1,145 @@
+#brand-logo {
+    font-size: 34px;
+}
+
+#app-navbar {
+    background: linear-gradient(120deg, #1f0423, #6c0773);
+}
+
+body {
+    background-color: #F5EEF8;
+}
+
+.footer-basic {
+    padding: 40px 0;
+    background: none;
+    color: #1f0423;
+}
+
+.footer-basic .copyright {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.divider-style, .info {
+    margin-top: 40px;
+    position: relative;
+    margin-right: 40px;
+    margin-left: 40px;
+}
+
+.divider-style span {
+    background: rgba(157, 19, 176, 0.13);
+    padding: 0 20px;
+    position: relative;
+    z-index: 5;
+}
+
+.divider-style:before, .divider-style:after {
+    content: "";
+    display: block;
+    border-top: solid 1px black;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    z-index: 1;
+}
+
+.info {
+    text-align: center;
+}
+
+
+.search-form {
+
+    margin: 80px 5px;
+    font: normal 12px sans-serif;
+    box-shadow: 1px 2px 4px 0  rgba(0, 0, 0, 0.08);
+}
+
+.search-form div.input-group-addon {
+    background: #fff;
+    color: #80A3BD;
+    border-bottom-left-radius: 2px;
+    border-top-left-radius: 2px;
+    border: 1px solid #b6c3cd;
+    border-right: 0;
+}
+
+
+.search-form .input-group input {
+    background-color: #ffffff;
+    box-shadow: none;
+    color: #4E565C;
+    outline: none;
+    border: 1px solid #b6c3cd;
+    border-right: 0;
+    border-left: 0;
+}
+
+.search-form div.input-group-btn button {
+    border-bottom-right-radius: 2px;
+    border-top-right-radius: 2px;
+    background: #6caee0;
+    box-shadow: rgba(0, 0, 0, 0.08);
+    color: #ffffff;
+    border-color: #6caee0;
+    outline: none;
+    opacity: 0.9;
+}
+
+.search-form div.input-group-btn button:hover {
+    opacity: 1;
+}
+
+.search-form div.input-group-btn button:focus:active {
+    background-color: #6caee0;
+    color: #ffffff;
+    outline: none;
+}
+
+.form-control {
+
+    width: 700px;
+}
+
+.input-group {
+    width: 800px;
+}
+
+.container-fluid {
+    width: 700px;
+
+}
+
+.collapse {
+    justify-content: right;
+}
+
+.btn {
+    position: center;
+    text-align: center;
+}
+
+
+.button_create {
+    height: 35px;
+    width: 120px;
+    font-size: 20px;
+    background: #214a80;
+    text-align: center;
+
+}
+
+.input_text {
+
+    margin-left: 5%;
+    text-align: center;
+    font-family: 'Open Sans', 'Helvetica Neue', 'Segoe UI', 'Calibri', 'Arial', sans-serif;
+    font-size: 18px;
+    width: 90%;
+    color: #60666d;
+}

@@ -1,37 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title th:text="#{home.page}">{homePage}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/homePage.css">
+
 </head>
+
 <body>
-    <h1>Projects</h1>
 
-    <div class="container-fluid">
-        <div class="card shadow">
+<div th:include="fragments/header :: header-home-page" th:remove="tag"></div>
 
-            <div class="card-body">
-                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                    <table class="table dataTable my-0" id="dataTable">
-                        <thead>
-                        <tr  align="center">
-                            <th th:text="id"></th>
-                            <th th:text="name"></th>
-                            <th th:text="description"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="project : ${project}">
-                            <td align="center" th:text="${project.id}"></td>
-                            <td align="center" th:text="${project.name}"></td>
-                            <td align="center" th:text="${project.description}"></td>
 
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+<div class="info">
+    <h2 class="info" th:text="#{info}"><span>{Info}</span></h2>
+    <h3 class="divider-style"></h3>
+</div>
+
+<form class="d-xl-flex justify-content-xl-center align-items-xl-start search-form" method="post">
+    <div class="input-group">
+
+        <div class="input-group-prepend"><span class="input-group-text">
+                <i class="fa fa-search"></i></span>
+        </div>
+
+        <input class="form-control" type="text" th:placeholder="#{search.project}">
+
+        <div class="input-group-append">
+            <button class="btn btn-light" type="button" th:text="#{search}">{Search}</button>
+        </div>
+    </div>
+</form>
+
+
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${project}">
+                        <th scope="row" th:text="${p.id}" style="width: 10px">{ID}</th>
+                        <th scope="row" th:text="${p.name}" style="width: 10px">{ID}</th>
+                        <th scope="row" th:text="${p.description}" style="width: 10px">{ID}</th>
+                    </tr>
+
+                </table>
             </div>
         </div>
     </div>
+</div>
+</div>
+
+<div th:include="fragments/footer :: footer" th:remove="tag"></div>
+
 </body>
+
 </html>

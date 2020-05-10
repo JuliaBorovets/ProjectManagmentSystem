@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title th:text="#{user.project.page}">{user project page}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/css/userHomePage.css">
+
+</head>
+
+<body>
+
+<div th:include="fragments/header :: header-logged-user" th:remove="tag"></div>
+
+<br>
+
+<div class="info">
+    <h2 class="info" th:text="${projectName}"><span>{project name}</span></h2>
+</div>
+
+<br>
+
+<section>
+    <div class="container">
+
+    <table class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{active.tasks}">tasks</th>
+                <th th:text="#{artifacts}">artifacts</th>
+                <th th:text="#{to.do}">done</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="t : ${tasks}">
+
+                <td>
+                    <table class="table table-nostriped">
+                        <tr>
+                            <td th:text="#{number.task}">id</td>
+                            <td th:text="${t.id}">id</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{name.of.task}">name</td>
+                            <td th:text="${t.name}">name</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{description}">description</td>
+                            <td th:text="${t.description}">description</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{deadline}">deadline</td>
+                            <td th:text="${t.deadline}">deadline</td>
+                        </tr>
+
+
+                    </table>
+                </td>
+                <td>
+
+                    <table class="table table-nostriped">
+                        <tr th:each="ar : ${t.artifacts}">
+                            <td th:text="${ar.name}">name</td>
+                        </tr>
+                    </table>
+
+                </td>
+
+
+                <td>
+
+                    <table class="table table-nostriped">
+
+                        <tr>
+                            <td>
+                                <div>
+                                    <form th:action="@{/do_task/{id}(id=${t.id})}">
+                                        <form>
+                                            <button class="btn btn-default" type="submit" href="#">
+                                                <i class="fa fa-bolt" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<div th:include="fragments/footer :: footer" th:remove="tag"></div>
+
+</body>
+</html>

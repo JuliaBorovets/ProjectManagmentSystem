@@ -3,11 +3,11 @@ package com.training.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -19,19 +19,18 @@ public class Artifact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "type")
     private String type;
 
-    @Column(name = "content")
     private String content;
 
-    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL)
-    private List<Association> associations;
+    @ManyToOne
+    private Task task;
+
+    @ManyToOne
+    private Project project;
 
 }

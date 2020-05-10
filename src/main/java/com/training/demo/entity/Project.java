@@ -8,9 +8,9 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @EqualsAndHashCode
 
 @Entity
@@ -31,4 +31,12 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<Task> tasks;
 
+    @ManyToMany(mappedBy = "projects")
+    private List<Worker> workers;
+
+    @ManyToOne
+    private Worker admin;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
+    private List<Artifact> artifacts;
 }

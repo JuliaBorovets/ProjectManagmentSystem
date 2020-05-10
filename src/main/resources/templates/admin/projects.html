@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title th:text="#{user.project.page}">{user project page}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/css/adminPage.css">
+
+</head>
+
+<body>
+
+<div th:include="fragments/header :: header-logged-user" th:remove="tag"></div>
+
+<br>
+
+<div class="info">
+    <h2 class="info" th:text="${project.name}"><span>{project name}</span></h2>
+</div>
+
+
+<br>
+
+<div class="alert" th:if="${error}">
+    <h3 class="black" th:text="#{reg.error.generic}">{Reg error}</h3>
+</div>
+
+
+<h2 class="info" th:text="#{artifacts}"><span>{artifacts}</span></h2>
+
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                    <tr align="center">
+                        <th th:text="#{number.task}">№</th>
+                        <th th:text="#{artifacts.name}"></th>
+                        <th th:text="#{artifacts.type}"></th>
+                        <th><em class="fa fa-cog"></em></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="ar : ${artifacts}">
+                        <td align="center" th:text="${ar.id}"></td>
+                        <td align="center" th:text="${ar.name}"></td>
+                        <td align="center" th:text="${ar.content}"></td>
+
+                        <td align="center">
+                            <form th:action="@{/admin/{pid}/delete_artifact/{id}(id=${ar.id}, pid=${project.id})}">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<section class="jumbotron2 text-center">
+    <div class="project">
+        <form id="newArtifact" name="newArtifact" th:action="@{/admin/{pid}/create_artifact(pid=${project.id})}"
+              th:object="${newArtifact}"
+              method="post">
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="input_text"
+                       th:placeholder="#{artifacts.name}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="type" name="type" size="100px" th:field="*{type}" class="input_text"
+                       th:placeholder="#{artifacts.type}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="content" name="content" size="100px" th:field="*{content}" class="input_text"
+                       th:placeholder="#{artifacts.content}" required>
+            </div>
+            <br>
+            <div>
+                <input class="button_create btn-primary " type="submit"/>
+            </div>
+            <br>
+
+            <br>
+
+
+        </form>
+    </div>
+</section>
+
+<br>
+<h2 class="info" th:text="#{workers}"><span>{workers}</span></h2>
+
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                    <tr align="center">
+                        <th th:text="'ID'">id</th>
+                        <th th:text="#{worker.first.name}"></th>
+                        <th th:text="#{worker.last.name}"></th>
+                        <th th:text="#{worker.email}"></th>
+                        <th th:text="#{worker.login}"></th>
+                        <th><em class="fa fa-cog"></em></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="w : ${workers}">
+                        <td align="center" th:text="${w.id}"></td>
+                        <td align="center" th:text="${w.name}"></td>
+                        <td align="center" th:text="${w.surname}"></td>
+                        <td align="center" th:text="${w.email}"></td>
+                        <td align="center" th:text="${w.login}"></td>
+
+                        <td align="center">
+                            <form th:action="@{/admin/{pid}/delete_worker/{id}(id=${w.id}, pid=${project.id})}">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<section class="jumbotron2 text-center">
+    <div class="project">
+        <form id="newWorker" name="newWorker" th:action="@{/admin/{pid}/create_worker(pid=${project.id})}"
+              th:object="${newWorker}" method="post">
+            <br>
+
+            <div class="input_text">
+                <input type="number" id="id" name="id" size="100px" th:field="*{id}" class="id"
+                       th:placeholder="#{user.id}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="login" name="login" size="100px" th:field="*{login}" class="login"
+                       th:placeholder="#{worker.login}" required>
+            </div>
+            <br>
+            <div>
+                <input class="button_create btn-primary " type="submit"/>
+            </div>
+            <br>
+
+            <br>
+
+        </form>
+    </div>
+</section>
+
+
+<br>
+<h2 class="info" th:text="#{active.tasks}"><span>{active tasks}</span></h2>
+
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                    <tr align="center">
+                        <th th:text="'ID'">id</th>
+                        <th th:text="#{name.of.task}"></th>
+                        <th th:text="#{description}"></th>
+                        <th th:text="#{deadline}"></th>
+                        <th th:text="#{workers.id}"></th>
+                        <th th:text="#{artifacts.id}"></th>
+                        <th><em class="fa fa-cog"></em></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="activeTask : ${active_tasks}">
+                        <td align="center" th:text="${activeTask.id}"></td>
+                        <td align="center" th:text="${activeTask.name}"></td>
+                        <td align="center" th:text="${activeTask.description}"></td>
+                        <td align="center" th:text="${activeTask.deadline}"></td>
+                        <td align="center" th:text="${activeTask.workers}"></td>
+                        <td align="center" th:text="${activeTask.artifacts}"></td>
+
+                        <td align="center">
+                            <form th:action="@{/admin/{pid}/delete_task/{id}(id=${activeTask.id}, pid=${project.id})}">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<br>
+<br>
+
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+    <title th:text="#{home.page}">{homePage}</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fonts/ionicons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ABeeZee">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/fonts/font-awesome.min.css">
+    <link rel="stylesheet" href="/fonts/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/css/userPage.css">
+
+</head>
+
+<body>
+
+<div th:include="fragments/header :: header-logged-user" th:remove="tag"></div>
+
+<br>
+
+<div class="info">
+    <h2 class="info" th:text="#{my.projects}"><span>{My projects}</span></h2>
+</div>
+
+<br>
+<div class="info">
+    <a class="info" href="/create"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+</div>
+<br>
+
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                    <tr align="center">
+                        <th th:text="#{project.number}"></th>
+                        <th th:text="#{project.name}"></th>
+                        <th th:text="#{project.info}"></th>
+                        <th><em class="fa fa-cog"></em></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="p : ${projects}">
+                        <td align="center" th:text="${p.id}"></td>
+                        <td align="center" th:text="${p.name}"></td>
+                        <td align="center" th:text="${p.description}"></td>
+
+                        <td align="center">
+                            <a class="btn btn-default" th:href="@{|/user_projects/${p.id}|}"><em
+                                    class="fa fa-info"></em></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div th:include="fragments/footer :: footer" th:remove="tag"></div>
+
+
+</body>
+
+</html>

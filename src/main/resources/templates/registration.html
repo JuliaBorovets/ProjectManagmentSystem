@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>regForm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/registrationForm.css">
+
+</head>
+
+<body class="text-center">
+<div class="login-dark">
+    <form class="registration" method="post">
+
+        <h2 class="sr-only">Login Form</h2>
+
+        <div class="form-group">
+            <form id="newUser" name="newUser" action="#" th:action="@{/reg}" th:object="${newWorker}" method="post">
+                <input class="form-control" type="text" name="name" th:placeholder="#{enter.first.name}">
+                <input class="form-control" type="text" name="surname" th:placeholder="#{enter.last.name}">
+                <input class="form-control" type="text" name="login" th:placeholder="#{enter.login}">
+                <input class="form-control" type="email" name="email" th:placeholder="#{enter.email}">
+                <input class="form-control" type="password" name="password" th:placeholder="#{enter.password}">
+        </div>
+
+
+        <div class="button-group">
+            <input class="btn btn-primary btn-block" type="submit" th:value="#{register}"/>
+            <a class="btn btn-primary btn-block" type="submit" th:text="#{cancel}" href="/login">{Відмінити}</a>
+        </div>
+
+    </form>
+    </form>
+</div>
+
+</body>
+
+</html>
