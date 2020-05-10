@@ -1,6 +1,8 @@
 package com.training.demo.controllers;
 
 import com.training.demo.controllers.exception.CanNotFoundException;
+import com.training.demo.controllers.exception.CreateException;
+import com.training.demo.dto.AddTaskDTO;
 import com.training.demo.dto.AddWorkerDTO;
 import com.training.demo.dto.ArtifactDTO;
 import com.training.demo.dto.WorkerDTO;
@@ -31,15 +33,16 @@ public class AdminController {
         this.workerService = workerService;
     }
 
-    @RequestMapping({"/{id}", "/{id}/create_artifact", "/{id}/create_worker"})
+    @RequestMapping({"/{id}", "/{id}/create_artifact", "/{id}/create_worker", "/{id}/create_task"})
     public String testAdmin(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker,
                             @ModelAttribute("newArtifact") ArtifactDTO artifactDTO,
-                            @ModelAttribute("newWorker") AddWorkerDTO newWorker) throws CanNotFoundException {
+                            @ModelAttribute("newWorker") AddWorkerDTO newWorker,
+                            @ModelAttribute("newTask") AddTaskDTO newTask) throws CanNotFoundException {
         Project project = projectService.findProjectById(id);
         model.addAttribute("error", false);
         model.addAttribute("project", project);
         model.addAttribute("projects", projectService.getAllProjects());
-        model.addAttribute("tasks", taskService.findByProjectAndWorkers(project, worker));
+        model.addAttribute("active_tasks", taskService.findActiveTasksByProject(project));
         model.addAttribute("artifacts", artifactService.findArtifactsByProjectId(id));
         model.addAttribute("workers", workerService.findWorkersByProjectId(project));
         return "admin/projects";
@@ -75,8 +78,7 @@ public class AdminController {
     public String createNewWorkerToProject(@ModelAttribute("newWorker") AddWorkerDTO newWorker, Model model,
                                            @PathVariable("project") Long projectId) throws CanNotFoundException {
 
-        Project project = projectService.findProjectById(projectId);
-        model.addAttribute("project", project);
+        addProjectInfo(model, projectId);
         try {
             projectService.addWorkerToProject(newWorker, projectId);
         } catch (CanNotFoundException e) {
@@ -85,4 +87,36 @@ public class AdminController {
         }
         return "redirect:/admin/{project}";
     }
+
+    @PostMapping("/{project}/create_task")
+    public String createNewTaskToProject(@ModelAttribute("newTask") AddTaskDTO newTask, Model model,
+                                         @PathVariable("project") Long projectId) throws CanNotFoundException {
+
+        addProjectInfo(model, projectId);
+
+        try {
+            taskService.saveNewTask(newTask, projectId);
+        } catch (CreateException e) {
+            model.addAttribute("error", true);
+            return "redirect:/admin/{project}";
+        }
+        return "redirect:/admin/{project}";
+    }
+
+    @RequestMapping("/{project}/delete_task/{id}")
+    public String deleteTaskFromProject(Model model, @PathVariable("id") Long id,
+                                        @PathVariable("project") Long projectId) throws CanNotFoundException {
+
+        taskService.deleteTaskFromProject(id);
+        return "redirect:/admin/{project}";
+    }
+
+    private void addProjectInfo(Model model, Long projectId) throws CanNotFoundException {
+        Project project = projectService.findProjectById(projectId);
+        model.addAttribute("project", project);
+    }
+
+
 }
+
+

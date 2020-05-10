@@ -14,13 +14,13 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ExceptionHandlers {
 
-    @ExceptionHandler(Exception.class)
-    public ModelAndView handleApplicationException() {
-        log.error("global exception");
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("error", true);
-        return modelAndView;
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ModelAndView handleApplicationException() {
+//        log.error("global exception");
+//        ModelAndView modelAndView = new ModelAndView("index");
+//        modelAndView.addObject("error", true);
+//        return modelAndView;
+//    }
 
 
     @ExceptionHandler({org.springframework.validation.BindException.class, IllegalStateException.class})

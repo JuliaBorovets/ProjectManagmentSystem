@@ -185,7 +185,54 @@
 
 
 <br>
+<h2 class="info" th:text="#{active.tasks}"><span>{active tasks}</span></h2>
+
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <div class="card-body">
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table dataTable my-0" id="dataTable">
+                    <thead>
+                    <tr align="center">
+                        <th th:text="'ID'">id</th>
+                        <th th:text="#{name.of.task}"></th>
+                        <th th:text="#{description}"></th>
+                        <th th:text="#{deadline}"></th>
+                        <th th:text="#{workers.id}"></th>
+                        <th th:text="#{artifacts.id}"></th>
+                        <th><em class="fa fa-cog"></em></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="activeTask : ${active_tasks}">
+                        <td align="center" th:text="${activeTask.id}"></td>
+                        <td align="center" th:text="${activeTask.name}"></td>
+                        <td align="center" th:text="${activeTask.description}"></td>
+                        <td align="center" th:text="${activeTask.deadline}"></td>
+                        <td align="center" th:text="${activeTask.workers}"></td>
+                        <td align="center" th:text="${activeTask.artifacts}"></td>
+
+                        <td align="center">
+                            <form th:action="@{/admin/{pid}/delete_task/{id}(id=${activeTask.id}, pid=${project.id})}">
+                                <button class="btn btn-default" type="submit">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 <br>
+<br>
+
 
 </body>
 </html>

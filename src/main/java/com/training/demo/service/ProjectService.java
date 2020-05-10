@@ -9,12 +9,14 @@ import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import com.training.demo.repository.ProjectRepository;
+import com.training.demo.repository.TaskRepository;
 import com.training.demo.repository.WorkerRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +26,14 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final WorkerService workerService;
     private final WorkerRepository workerRepository;
+    private final TaskService taskService;
 
-    public ProjectService(ProjectRepository projectRepository, WorkerService workerService, WorkerRepository workerRepository) {
+    public ProjectService(ProjectRepository projectRepository, WorkerService workerService,
+                          WorkerRepository workerRepository, TaskService taskService) {
         this.projectRepository = projectRepository;
         this.workerService = workerService;
         this.workerRepository = workerRepository;
+        this.taskService = taskService;
     }
 
     public Project findProjectById(Long id) throws CanNotFoundException {
@@ -134,4 +139,5 @@ public class ProjectService {
         workerRepository.save(worker);
         projectRepository.save(project);
     }
+
 }

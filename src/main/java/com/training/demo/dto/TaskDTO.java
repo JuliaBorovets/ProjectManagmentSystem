@@ -17,11 +17,13 @@ import static com.training.demo.dto.Regex.deadlineRegex;
 @NoArgsConstructor
 @ToString
 public class TaskDTO {
+
     Long id;
+
     String name;
+
     String description;
 
-    @Pattern(regexp = deadlineRegex)
     String deadline;
 
     Boolean isDone;
