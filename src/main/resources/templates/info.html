@@ -107,6 +107,59 @@
         </div>
     </div>
 </div>
+    
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{notactive.tasks}">tasks</th>
+                <th th:text="#{artifacts}">artifacts</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="t : ${tasks}">
+
+                <td>
+                    <table class="table table-nostriped">
+                        <tr>
+                            <td th:text="#{number.task}">id</td>
+                            <td th:text="${t.id}">id</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{name.of.task}">name</td>
+                            <td th:text="${t.name}">name</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{description}">description</td>
+                            <td th:text="${t.description}">description</td>
+                        </tr>
+
+
+
+                    </table>
+                </td>
+                <td>
+
+                    <table class="table table-nostriped">
+                        <tr th:each="ar : ${t.artifacts}">
+                            <td th:text="${ar.name}">name</td>
+                        </tr>
+                    </table>
+
+                </td>
+                <td align="center">
+                    <a class="btn btn-default" th:href="@{|/done_tasks|}"><em
+                            class="fa fa-info"></em></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <br>
 
