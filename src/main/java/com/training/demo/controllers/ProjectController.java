@@ -54,6 +54,7 @@ public class ProjectController {
         model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         model.addAttribute("user_info", worker);
         model.addAttribute("projects", projectService.findProjectsByWorker(worker));
+        model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
         return "info";
     }
 
