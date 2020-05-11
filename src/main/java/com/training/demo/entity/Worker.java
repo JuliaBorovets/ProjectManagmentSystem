@@ -1,6 +1,8 @@
 package com.training.demo.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -53,6 +55,7 @@ public class Worker implements UserDetails {
 
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable(name = "worker_task",
             joinColumns = @JoinColumn(name = "worker_id"),
             inverseJoinColumns = @JoinColumn(name = "task_id"))
@@ -72,11 +75,4 @@ public class Worker implements UserDetails {
     @OneToMany(mappedBy = "admin")
     private List<Project> adminProjects;
 
-    @Override
-    public String toString() {
-        return "Worker{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                '}';
-    }
 }

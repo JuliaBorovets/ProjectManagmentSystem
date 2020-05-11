@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,10 +37,6 @@ public class TaskService {
         this.workerRepository = workerRepository;
     }
 
-    public Task findTaskById(Long id) {
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Can not find task by id"));
-    }
 
     public List<Task> getAllTasks() {
         return (List<Task>) taskRepository.findAll();
@@ -57,6 +54,14 @@ public class TaskService {
 
     }
 
+    public List<Task> findDoneTasksByWorker(Worker worker) {
+        List<Task> tasks = worker.getTasks();
+        return tasks.stream()
+                .filter(Task::isDone)
+                .sorted(Comparator.comparing(Task::getId))
+                .collect(Collectors.toList());
+    }
+
     public List<AddTaskDTO> findActiveTasksByProject(Project project) {
         return taskRepository.findByProject(project)
                 .stream()
@@ -71,8 +76,18 @@ public class TaskService {
         Task task = taskRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("no task found"));
-        task.setDone(true);
+        task.setDone();
         taskRepository.save(task);
+    }
+
+    public Task saveNewTask(AddTaskDTO taskDTO, Long projectId) throws CreateException {
+        try {
+            Task task = createTask(taskDTO, projectId);
+            taskRepository.save(task);
+            return task;
+        } catch (DataIntegrityViolationException | CanNotFoundException e) {
+            throw new CreateException("can not save task to project with id = " + projectId);
+        }
     }
 
     public Task createTask(AddTaskDTO taskDTO, Long projectId) throws CanNotFoundException {
@@ -83,85 +98,70 @@ public class TaskService {
         return Task.builder()
                 .name(taskDTO.getName())
                 .description(taskDTO.getDescription())
-                .deadline(taskDTO.getDeadline())
-                .artifacts(getArtifactsFromInput(taskDTO.getArtifacts()))
+                .deadline(LocalDate.now())
                 .project(project)
-                .workers(getWorkersFromInput(taskDTO.getWorkers()))
                 .done(false)
                 .build();
+
     }
 
-    public void saveNewTask(AddTaskDTO taskDTO, Long projectId) throws CreateException {
-        try {
-            taskRepository.save(createTask(taskDTO, projectId));
-        } catch (DataIntegrityViolationException | CanNotFoundException e) {
-            throw new CreateException("can not save task to project with id = " + projectId);
-        }
+    /**
+     * makes relationship task-workers, task-artifacts
+     *
+     * @param artifacts - input artifacts from user
+     * @param workers   - input workers from user
+     * @param taskId    - id of task
+     */
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
+    public void makeRelationship(String artifacts, String workers, Long taskId) throws CanNotFoundException {
+        Task task = taskRepository
+                .findById(taskId)
+                .orElseThrow(() -> new CanNotFoundException("can not found task with id = " + taskId));
+        getArtifactsFromInput(artifacts, task);
+        getWorkersFromInput(workers, task);
     }
 
-    private List<Artifact> getArtifactsFromInput(String input) {
-        return Arrays.stream(input.split("\\s*,\\s*"))
+    /**
+     * add relationship task-artifacts
+     *
+     * @param input - input string with artifacts from user
+     * @param task  - task to add artifacts
+     */
+    private void getArtifactsFromInput(String input, Task task) {
+        List<Artifact> artifacts = Arrays.stream(input.split("\\s*,\\s*"))
                 .map(Long::parseLong)
                 .map(t -> artifactRepository.findById(t)
                         .orElseThrow(() -> new RuntimeException("can not find artifact with id = " + t)))
                 .collect(Collectors.toList());
 
+        artifacts.forEach(task::addArtifacts);
     }
 
-    private List<Worker> getWorkersFromInput(String input) {
-        return Arrays.stream(input.split("\\s*,\\s*"))
+    /**
+     * add relationship task-worker
+     *
+     * @param input - input string with workers from user
+     * @param task  - task to add workers
+     */
+    private void getWorkersFromInput(String input, Task task) {
+
+        List<Worker> workers = Arrays.stream(input.split("\\s*,\\s*"))
                 .map(Long::parseLong)
                 .map(t -> workerRepository.findById(t)
                         .orElseThrow(() -> new RuntimeException("can not find worker with id = " + t)))
                 .collect(Collectors.toList());
-    }
 
-    public void deleteTaskFromProject(Long taskID) {
-        Task task = taskRepository.findById(taskID).orElseThrow(() -> new RuntimeException("can not find"));
-        List<Worker> workers = task.getWorkers();
-
-        while (!(workers.size() == 0)) {
-            deleteTask(workers.get(workers.size() - 1), task);
-        }
-
-        taskRepository.delete(task);
+        workers.forEach(task::addWorker);
     }
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
-    public void deleteTask(Worker worker, Task task) {
-        try {
-            deleteWorkersFromTasks(task, worker);
-            deleteTaskFromWorker(task, worker);
-        } catch (ConcurrentModificationException e) {
-            log.error("concurrent exception");
-        }
+    public void deleteTaskFromProject(Long taskID) {
+        Task task = taskRepository.findById(taskID).orElseThrow(() -> new RuntimeException("can not find"));
+        taskRepository.delete(task);
     }
-
-    public void deleteTaskFromWorker(Task task, Worker worker) {
-
-        List<Task> workerTasks = worker.getTasks();
-        workerTasks.remove(task);
-        taskRepository.save(task);
-    }
-
-    public void deleteWorkersFromTasks(Task task, Worker worker) {
-
-        List<Worker> taskWorkers = task.getWorkers();
-        taskWorkers.remove(worker);
-        workerRepository.save(worker);
-    }
-
-
-    public List<Task> findDoneTasksByWorker(Worker worker) {
-        List<Task> tasks = worker.getTasks();
-        //log.error(tasks.get(0).toString());
-        return tasks.stream()
-                .filter(Task::isDone)
-                .sorted(Comparator.comparing(Task::getId))
-                .collect(Collectors.toList());
-    }
-
 
 }

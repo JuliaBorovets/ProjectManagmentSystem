@@ -230,6 +230,53 @@
 </div>
 
 
+<section class="jumbotron2 text-center">
+    <div class="project">
+        <form id="newTask" name="newTask" th:action="@{/admin/{pid}/create_task(pid=${project.id})}"
+              th:object="${newTask}" method="post">
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="name"
+                       th:placeholder="#{name.of.task}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="description" name="description" size="100px" th:field="*{description}"
+                       class="description" th:placeholder="#{description}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="date" id="deadline" name="deadline" size="100px" th:field="*{deadline}"
+                       class="deadline" th:placeholder="#{deadline}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="workers" name="workers" size="100px" th:field="*{workers}"
+                       class="workers" th:placeholder="#{workers.id.enter}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="artifacts" name="artifacts" size="100px" th:field="*{artifacts}"
+                       class="artifacts" th:placeholder="#{artifacts.id.enter}" required>
+            </div>
+            <br>
+            <div>
+                <input class="button_create btn-primary " type="submit"/>
+            </div>
+            <br>
+
+            <br>
+
+        </form>
+    </div>
+</section>
+
+
 <br>
 <br>
 

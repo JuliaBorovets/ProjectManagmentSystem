@@ -5,18 +5,20 @@ import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.dto.AddTaskDTO;
 import com.training.demo.dto.AddWorkerDTO;
 import com.training.demo.dto.ArtifactDTO;
-import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
+import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.ArtifactService;
 import com.training.demo.service.ProjectService;
 import com.training.demo.service.TaskService;
 import com.training.demo.service.WorkerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
@@ -94,12 +96,16 @@ public class AdminController {
 
         addProjectInfo(model, projectId);
 
+        Task task;
         try {
-            taskService.saveNewTask(newTask, projectId);
+            task = taskService.saveNewTask(newTask, projectId);
         } catch (CreateException e) {
             model.addAttribute("error", true);
+            log.error("errrror");
             return "redirect:/admin/{project}";
         }
+
+        taskService.makeRelationship(newTask.getArtifacts(), newTask.getWorkers(), task.getId());
         return "redirect:/admin/{project}";
     }
 

@@ -39,4 +39,10 @@ public class Project {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private List<Artifact> artifacts;
+
+
+    public void deleteWorkerFromProject(Worker worker) {
+        workers.remove(worker);
+        worker.getProjects().remove(this);
+    }
 }
