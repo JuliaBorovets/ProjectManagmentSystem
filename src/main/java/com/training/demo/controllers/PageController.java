@@ -16,14 +16,16 @@ import javax.validation.Valid;
 public class PageController {
 
     private final WorkerService workerService;
-    @Autowired
+
     public PageController(WorkerService workerService) {
+
         this.workerService = workerService;
     }
 
 
     @RequestMapping("/success")
     public String localRedirect() {
+
         return "redirect:/home";
     }
 

@@ -68,7 +68,7 @@ public class ProjectService {
 
 
     public List<Project> getAllProjects() {
-        return (List<Project>) projectRepository.findAll();
+        return projectRepository.findAll();
     }
 
     /**
@@ -97,18 +97,13 @@ public class ProjectService {
     public void addWorkerToProject(AddWorkerDTO workerDTO, Long projectId) throws CanNotFoundException {
         Worker worker = workerRepository
                 .findByIdAndLogin(workerDTO.getId(), workerDTO.getLogin())
-                .orElseThrow(() -> new CanNotFoundException("can not find worker"));
+                .orElseThrow(() -> new CanNotFoundException("can not find worker with id = " + workerDTO.getId()));
 
         Project project = projectRepository
                 .findById(projectId)
-                .orElseThrow(() -> new CanNotFoundException("can not fnd project"));
+                .orElseThrow(() -> new CanNotFoundException("can not fnd project with id = " + projectId));
 
-        List<Project> workerProjects = worker.getProjects();
-        List<Worker> projectWorkers = project.getWorkers();
-
-        workerProjects.add(project);
-        projectWorkers.add(worker);
-
+        project.addWorkerToProject(worker);
         workerRepository.save(worker);
         projectRepository.save(project);
     }

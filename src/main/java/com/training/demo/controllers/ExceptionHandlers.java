@@ -4,6 +4,7 @@ package com.training.demo.controllers;
 import com.training.demo.controllers.exception.*;
 import com.training.demo.dto.WorkerDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.dom4j.rule.Mode;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,13 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class ExceptionHandlers {
 
-//    @ExceptionHandler(Exception.class)
-//    public ModelAndView handleApplicationException() {
-//        log.error("global exception");
-//        ModelAndView modelAndView = new ModelAndView("index");
-//        modelAndView.addObject("error", true);
-//        return modelAndView;
-//    }
+    @ExceptionHandler({Exception.class})
+    public String handleGlobalException(Model model) {
+        log.error("global exception");
+        model.addAttribute("error", true);
+        return "redirect:/home";
+    }
 
 
     @ExceptionHandler({org.springframework.validation.BindException.class, IllegalStateException.class})

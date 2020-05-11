@@ -49,16 +49,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="u : ${user_info}">
-<!--                        <td align="center" th:text="${u.id}"></td>-->
                         <td align="center" th:text="${u.name}"></td>
                         <td align="center" th:text="${u.surname}"></td>
                         <td align="center" th:text="${u.login}"></td>
                         <td align="center" th:text="${u.email}"></td>
-
-<!--                        <td align="center">-->
-<!--                            <a class="btn btn-default" th:href="@{|/user_projects/${p.id}|}"><em-->
-<!--                                    class="fa fa-info"></em></a>-->
-<!--                        </td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -97,7 +91,7 @@
                         <td align="center" th:text="${p.description}"></td>
 
                         <td align="center">
-                            <a class="btn btn-default" th:href="@{|/user_projects/${p.id}|}"><em
+                            <a class="btn btn-default" th:href="@{|/project_info/${p.id}|}"><em
                                     class="fa fa-info"></em></a>
                         </td>
                     </tr>
@@ -150,10 +144,6 @@
                         </tr>
                     </table>
 
-                </td>
-                <td align="center">
-                    <a class="btn btn-default" th:href="@{|/done_tasks|}"><em
-                            class="fa fa-info"></em></a>
                 </td>
             </tr>
             </tbody>

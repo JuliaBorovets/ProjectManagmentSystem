@@ -6,7 +6,6 @@ import com.training.demo.controllers.util.ProjectPasswordEncoder;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
-import com.training.demo.repository.ProjectRepository;
 import com.training.demo.repository.WorkerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,13 +22,10 @@ public class WorkerService implements UserDetailsService {
 
     private final WorkerRepository workerRepository;
     private final ProjectPasswordEncoder passwordEncoder;
-    private final ProjectRepository projectRepository;
 
-    public WorkerService(WorkerRepository workerRepository, ProjectPasswordEncoder passwordEncoder,
-                         ProjectRepository projectRepository) {
+    public WorkerService(WorkerRepository workerRepository, ProjectPasswordEncoder passwordEncoder) {
         this.workerRepository = workerRepository;
         this.passwordEncoder = passwordEncoder;
-        this.projectRepository = projectRepository;
     }
 
     public List<WorkerDTO> findWorkersByProjectId(Project project) {
@@ -44,9 +40,9 @@ public class WorkerService implements UserDetailsService {
                         .build()).collect(Collectors.toList());
     }
 
-    public Worker findWorkerById(Long id) {
+    public Worker findWorkerById(Long id) throws CanNotFoundException {
         return workerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Немає такого працівника"));
+                .orElseThrow(() -> new CanNotFoundException("can nor find worker with id = " + id));
     }
 
     private Worker createWorker(WorkerDTO worker) {
@@ -73,9 +69,10 @@ public class WorkerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        log.error("loading user with login " + login);
-        log.error(login);
-        return workerRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(login));
+        log.info("loading user with login " + login);
+        log.info(login);
+        return workerRepository.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("can not find user with login = " + login));
     }
 
 

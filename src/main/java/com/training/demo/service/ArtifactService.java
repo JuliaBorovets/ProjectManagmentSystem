@@ -42,13 +42,19 @@ public class ArtifactService {
         return artifactRepository.findByProject(project);
     }
 
-    public void deleteArtifact(Long id) {
+    public void deleteArtifact(Long id) throws CanNotFoundException {
 
         Artifact artifact = artifactRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("no artifact"));
+                .orElseThrow(() -> new CanNotFoundException("can not find artifact with id = " + id));
 
         artifactRepository.delete(artifact);
+    }
+
+    public Artifact findArtifactById(Long id) throws CanNotFoundException {
+        return artifactRepository
+                .findById(id)
+                .orElseThrow(() -> new CanNotFoundException("can not find artifact with id = " + id));
     }
 
 }

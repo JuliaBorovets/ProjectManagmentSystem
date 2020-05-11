@@ -32,8 +32,8 @@ public class WorkerController {
     public String getProjectById(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker,
                                  @ModelAttribute("searchDTO") SearchDTO searchDTO) throws CanNotFoundException {
 
-        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         Project project = projectService.findProjectById(id);
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         model.addAttribute("project", project);
         model.addAttribute("tasks", taskService.findByProjectAndWorkers(project, worker));
         return "user/projects";
@@ -42,7 +42,7 @@ public class WorkerController {
 
     @GetMapping("/{id}/do_task/{task_id}")
     public String makeTaskDone(Model model, @PathVariable("task_id") Long id,
-                               @PathVariable("id") Long projectId) {
+                               @PathVariable("id") Long projectId) throws CanNotFoundException {
         taskService.makeTaskDone(id);
         return "redirect:/worker/{id}";
 

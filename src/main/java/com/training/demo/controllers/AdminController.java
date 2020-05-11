@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
+
     private final ArtifactService artifactService;
     private final ProjectService projectService;
     private final TaskService taskService;
@@ -44,8 +45,9 @@ public class AdminController {
                             @ModelAttribute("newTask") AddTaskDTO newTask,
                             @ModelAttribute("searchDTO") SearchDTO searchDTO) throws CanNotFoundException {
 
-        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         Project project = projectService.findProjectById(id);
+
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         model.addAttribute("error", false);
         model.addAttribute("project", project);
         model.addAttribute("projects", projectService.getAllProjects());
@@ -57,7 +59,7 @@ public class AdminController {
 
     @RequestMapping("/{project}/delete_artifact/{id}")
     public String deleteArtifact(Model model, @PathVariable("id") Long id,
-                                 @PathVariable("project") Long projectId) {
+                                 @PathVariable("project") Long projectId) throws CanNotFoundException {
 
         artifactService.deleteArtifact(id);
         return "redirect:/admin/{project}";
@@ -106,7 +108,6 @@ public class AdminController {
             task = taskService.saveNewTask(newTask, projectId);
         } catch (CreateException e) {
             model.addAttribute("error", true);
-            log.error("errrror");
             return "redirect:/admin/{project}";
         }
 
@@ -122,16 +123,17 @@ public class AdminController {
         return "redirect:/admin/{project}";
     }
 
-    private void addProjectInfo(Model model, Long projectId) throws CanNotFoundException {
-        Project project = projectService.findProjectById(projectId);
-        model.addAttribute("project", project);
-    }
-
     @RequestMapping("/delete/{id}")
     public String deleteProject(@PathVariable("id") Long id, Model model) throws CanNotFoundException {
         projectService.deleteProject(id);
         return "redirect:/home";
 
+    }
+
+
+    private void addProjectInfo(Model model, Long projectId) throws CanNotFoundException {
+        Project project = projectService.findProjectById(projectId);
+        model.addAttribute("project", project);
     }
 
 }

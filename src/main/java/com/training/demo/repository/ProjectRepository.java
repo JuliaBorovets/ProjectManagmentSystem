@@ -15,4 +15,6 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     List<Project> findByWorkersOrAdmin(Worker workers, Worker admin);
 
+    List<Project> findAll();
+
 }

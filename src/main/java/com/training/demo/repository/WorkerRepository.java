@@ -19,5 +19,4 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
 
     Optional<Worker> findByIdAndLogin(Long id, String login);
 
-
 }

@@ -22,7 +22,6 @@ import java.util.List;
 @Table(name = "worker",uniqueConstraints={
 @UniqueConstraint( name = "login", columnNames = {"login"}),
         @UniqueConstraint(columnNames = {"email"})})
-
 public class Worker implements UserDetails {
 
     @Id

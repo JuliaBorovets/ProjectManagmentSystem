@@ -27,23 +27,17 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final ArtifactRepository artifactRepository;
-    private final WorkerRepository workerRepository;
+    private final ProjectService projectService;
+    private final ArtifactService artifactService;
+    private final WorkerService workerService;
 
-    public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository,
-                       ArtifactRepository artifactRepository, WorkerRepository workerRepository) {
+    public TaskService(TaskRepository taskRepository, ProjectService projectService, ArtifactService artifactService,
+                       WorkerService workerService) {
         this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.artifactRepository = artifactRepository;
-        this.workerRepository = workerRepository;
+        this.projectService = projectService;
+        this.artifactService = artifactService;
+        this.workerService = workerService;
     }
-
-
-    public List<Task> getAllTasks() {
-        return (List<Task>) taskRepository.findAll();
-    }
-
 
     public List<Task> findByProjectAndWorkers(Project project, Worker worker) {
 
@@ -77,11 +71,9 @@ public class TaskService {
     }
 
 
-    public void makeTaskDone(Long id) {
+    public void makeTaskDone(Long id) throws CanNotFoundException {
 
-        Task task = taskRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("no task found"));
+        Task task = findTaskById(id);
         task.setDone();
         taskRepository.save(task);
     }
@@ -99,9 +91,7 @@ public class TaskService {
 
     public Task createTask(AddTaskDTO taskDTO, Long projectId) throws CanNotFoundException {
 
-        Project project = projectRepository
-                .findById(projectId)
-                .orElseThrow(() -> new CanNotFoundException("can not found project with id = " + projectId));
+        Project project = projectService.findProjectById(projectId);
 
         return Task.builder()
                 .name(taskDTO.getName())
@@ -131,9 +121,7 @@ public class TaskService {
             rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
     public void makeRelationship(String artifacts, String workers, Long taskId) throws CanNotFoundException {
 
-        Task task = taskRepository
-                .findById(taskId)
-                .orElseThrow(() -> new CanNotFoundException("can not found task with id = " + taskId));
+        Task task = findTaskById(taskId);
         getArtifactsFromInput(artifacts, task);
         getWorkersFromInput(workers, task);
     }
@@ -148,8 +136,15 @@ public class TaskService {
 
         List<Artifact> artifacts = Arrays.stream(input.split("\\s*,\\s*"))
                 .map(Long::parseLong)
-                .map(t -> artifactRepository.findById(t)
-                        .orElseThrow(() -> new RuntimeException("can not find artifact with id = " + t)))
+                .map(t -> {
+                    Artifact artifacts1 = new Artifact();
+                    try {
+                        artifacts1 = artifactService.findArtifactById(t);
+                    } catch (CanNotFoundException e) {
+                        log.error("can not find exception");
+                    }
+                    return artifacts1;
+                })
                 .collect(Collectors.toList());
 
         artifacts.forEach(task::addArtifacts);
@@ -165,8 +160,15 @@ public class TaskService {
 
         List<Worker> workers = Arrays.stream(input.split("\\s*,\\s*"))
                 .map(Long::parseLong)
-                .map(t -> workerRepository.findById(t)
-                        .orElseThrow(() -> new RuntimeException("can not find worker with id = " + t)))
+                .map(w -> {
+                    Worker worker = new Worker();
+                    try {
+                        worker = workerService.findWorkerById(w);
+                    } catch (CanNotFoundException e) {
+                        log.error("can not find exception");
+                    }
+                    return worker;
+                })
                 .collect(Collectors.toList());
 
         workers.forEach(task::addWorker);
@@ -175,12 +177,16 @@ public class TaskService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
-    public void deleteTaskFromProject(Long taskID) {
+    public void deleteTaskFromProject(Long taskID) throws CanNotFoundException {
 
-        Task task = taskRepository
-                .findById(taskID)
-                .orElseThrow(() -> new RuntimeException("can not find"));
+        Task task = findTaskById(taskID);
         taskRepository.delete(task);
+    }
+
+    public Task findTaskById(Long id) throws CanNotFoundException {
+        return taskRepository
+                .findById(id)
+                .orElseThrow(() -> new CanNotFoundException("Can not find task with id = " + id));
     }
 
 }

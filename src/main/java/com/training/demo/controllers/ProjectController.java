@@ -63,15 +63,6 @@ public class ProjectController {
     }
 
 
-    @GetMapping("/done_tasks")
-    public String done_tasks(@AuthenticationPrincipal Worker worker, Model model,
-                             @ModelAttribute("searchDTO") SearchDTO searchDTO) throws CanNotFoundException {
-
-        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
-        model.addAttribute("user_info", worker);
-        model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
-        return "done_tasks";
-    }
 
     @GetMapping("/search")
     public String searchProjects(@ModelAttribute("searchDTO") SearchDTO searchDTO, Model model) {

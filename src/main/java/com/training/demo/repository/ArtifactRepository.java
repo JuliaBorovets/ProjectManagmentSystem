@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ArtifactRepository extends CrudRepository<Artifact, Long> {
+
     Optional<Artifact> findById(Long id);
 
     List<Artifact> findByProject(Project project);
