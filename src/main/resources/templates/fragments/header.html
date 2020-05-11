@@ -6,11 +6,24 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navcol-1">
+                <div class="nav-item" role="presentation">
+                    <a class="nav-link active" href="/home"  th:text="#{go.to.first.page}">{first page}</a>
+                </div>
 
                 <div class="float-left float-md-right mt-5 mt-md-0 search-area">
 
-                    <i class="fa fa-search float-left search-icon"></i>
-                    <input class="float-left float-sm-right custom-search-input" type="search" th:placeholder="#{search}" />
+                     <form id="searchDTO" name="searchDTO" th:action="@{/search}"
+                                         th:object="${searchDTO}" method="post">
+
+                        <input class="float-left float-sm-right custom-search-input" type="number" th:placeholder="#{search}"
+                         id="searchID" name="searchID" th:field="*{searchID}" maxlength="10" required/>
+
+                        <button class="btn btn-default" type="submit">
+                              <i class="fa fa-search float-left search-icon"></i>
+                        </button>
+                     </form>
+
+
                 </div>
 
                 <ul class="nav navbar-nav ml-auto">

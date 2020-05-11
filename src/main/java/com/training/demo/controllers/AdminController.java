@@ -5,21 +5,25 @@ import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.dto.AddTaskDTO;
 import com.training.demo.dto.AddWorkerDTO;
 import com.training.demo.dto.ArtifactDTO;
-import com.training.demo.dto.WorkerDTO;
+import com.training.demo.dto.SearchDTO;
 import com.training.demo.entity.Project;
+import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.ArtifactService;
 import com.training.demo.service.ProjectService;
 import com.training.demo.service.TaskService;
 import com.training.demo.service.WorkerService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RequestMapping("/admin")
 @Controller
 public class AdminController {
+
     private final ArtifactService artifactService;
     private final ProjectService projectService;
     private final TaskService taskService;
@@ -33,12 +37,17 @@ public class AdminController {
         this.workerService = workerService;
     }
 
-    @RequestMapping({"/{id}", "/{id}/create_artifact", "/{id}/create_worker", "/{id}/create_task"})
+    @RequestMapping({"/{id}", "/{id}/create_artifact", "/{id}/create_worker", "/{id}/create_task",
+            "/delete{id}"})
     public String testAdmin(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker,
                             @ModelAttribute("newArtifact") ArtifactDTO artifactDTO,
                             @ModelAttribute("newWorker") AddWorkerDTO newWorker,
-                            @ModelAttribute("newTask") AddTaskDTO newTask) throws CanNotFoundException {
+                            @ModelAttribute("newTask") AddTaskDTO newTask,
+                            @ModelAttribute("searchDTO") SearchDTO searchDTO) throws CanNotFoundException {
+
         Project project = projectService.findProjectById(id);
+
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         model.addAttribute("error", false);
         model.addAttribute("project", project);
         model.addAttribute("projects", projectService.getAllProjects());
@@ -50,7 +59,7 @@ public class AdminController {
 
     @RequestMapping("/{project}/delete_artifact/{id}")
     public String deleteArtifact(Model model, @PathVariable("id") Long id,
-                                 @PathVariable("project") Long projectId) {
+                                 @PathVariable("project") Long projectId) throws CanNotFoundException {
 
         artifactService.deleteArtifact(id);
         return "redirect:/admin/{project}";
@@ -94,12 +103,15 @@ public class AdminController {
 
         addProjectInfo(model, projectId);
 
+        Task task;
         try {
-            taskService.saveNewTask(newTask, projectId);
+            task = taskService.saveNewTask(newTask, projectId);
         } catch (CreateException e) {
             model.addAttribute("error", true);
             return "redirect:/admin/{project}";
         }
+
+        taskService.makeRelationship(newTask.getArtifacts(), newTask.getWorkers(), task.getId());
         return "redirect:/admin/{project}";
     }
 
@@ -111,11 +123,18 @@ public class AdminController {
         return "redirect:/admin/{project}";
     }
 
+    @RequestMapping("/delete/{id}")
+    public String deleteProject(@PathVariable("id") Long id, Model model) throws CanNotFoundException {
+        projectService.deleteProject(id);
+        return "redirect:/home";
+
+    }
+
+
     private void addProjectInfo(Model model, Long projectId) throws CanNotFoundException {
         Project project = projectService.findProjectById(projectId);
         model.addAttribute("project", project);
     }
-
 
 }
 

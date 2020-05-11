@@ -22,8 +22,35 @@ body {
 }
 
 .container-fluid {
-    width: 700px;
+    width: 60%;
+    max-height: 300px;
+    overflow: auto;
 
+}
+
+.created_tasks {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.added_workers {
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.formatTable {
+    max-width: 120px;
+    max-height: 20px;
+}
+
+.formatTableDesc {
+    max-width: 160px;
 }
 
 .collapse {
@@ -54,9 +81,6 @@ body {
     color: #214a80;
 }
 
-.info {
-    text-align: center;
-}
 
 .left_projects {
     margin-left: 20px;
@@ -99,18 +123,10 @@ body {
     color: #2980ef;
 }
 
-.icon {
-    width: 50px;
-    height: 50px;
-    font-size: 80px;
-}
 
 
 .d-block {
     color: black;
-}
-
-element.style {
 }
 
 .container {
@@ -129,10 +145,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     box-sizing: border-box;
 }
 
-user agent stylesheet
-main {
-    display: block;
-}
 
 body {
     margin: 0;
@@ -190,13 +202,9 @@ html {
 }
 
 .tasks {
-    width: 600px;
+    width: 700px;
     border-color: white;
     color: white;
-}
-
-body {
-    background-color: #F5EEF8;
 }
 
 

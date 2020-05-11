@@ -12,11 +12,14 @@ import com.training.demo.repository.ProjectRepository;
 import com.training.demo.repository.TaskRepository;
 import com.training.demo.repository.WorkerRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,29 +27,20 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final ProjectRepository projectRepository;
-    private final ArtifactRepository artifactRepository;
-    private final WorkerRepository workerRepository;
+    private final ProjectService projectService;
+    private final ArtifactService artifactService;
+    private final WorkerService workerService;
 
-    public TaskService(TaskRepository taskRepository, ProjectRepository projectRepository,
-                       ArtifactRepository artifactRepository, WorkerRepository workerRepository) {
+    public TaskService(TaskRepository taskRepository, ProjectService projectService, ArtifactService artifactService,
+                       WorkerService workerService) {
         this.taskRepository = taskRepository;
-        this.projectRepository = projectRepository;
-        this.artifactRepository = artifactRepository;
-        this.workerRepository = workerRepository;
+        this.projectService = projectService;
+        this.artifactService = artifactService;
+        this.workerService = workerService;
     }
-
-    public Task findTaskById(Long id) {
-        return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Can not find task by id"));
-    }
-
-    public List<Task> getAllTasks() {
-        return (List<Task>) taskRepository.findAll();
-    }
-
 
     public List<Task> findByProjectAndWorkers(Project project, Worker worker) {
+
         List<Task> tasks = taskRepository.findByProjectAndWorkers(project, worker);
 
         log.error(tasks.toString());
@@ -57,100 +51,142 @@ public class TaskService {
 
     }
 
+    public List<Task> findDoneTasksByWorker(Worker worker) {
+
+        List<Task> tasks = worker.getTasks();
+        return tasks.stream()
+                .filter(Task::isDone)
+                .sorted(Comparator.comparing(Task::getId))
+                .collect(Collectors.toList());
+    }
+
     public List<AddTaskDTO> findActiveTasksByProject(Project project) {
+
         return taskRepository.findByProject(project)
                 .stream()
                 .filter(t -> !t.isDone())
-                .sorted(Comparator.comparing(Task::getId))
+                .sorted(Comparator.comparing(Task::getId).reversed())
                 .map(AddTaskDTO::new)
                 .collect(Collectors.toList());
     }
 
 
-    public void makeTaskDone(Long id) {
-        Task task = taskRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("no task found"));
-        task.setDone(true);
+    public void makeTaskDone(Long id) throws CanNotFoundException {
+
+        Task task = findTaskById(id);
+        task.setDone();
         taskRepository.save(task);
     }
 
-    public Task createTask(AddTaskDTO taskDTO, Long projectId) throws CanNotFoundException {
-        Project project = projectRepository
-                .findById(projectId)
-                .orElseThrow(() -> new CanNotFoundException("can not found project with id = " + projectId));
+    public Task saveNewTask(AddTaskDTO taskDTO, Long projectId) throws CreateException {
 
-        return Task.builder()
-                .name(taskDTO.getName())
-                .description(taskDTO.getDescription())
-                .deadline(taskDTO.getDeadline())
-                .artifacts(getArtifactsFromInput(taskDTO.getArtifacts()))
-                .project(project)
-                .workers(getWorkersFromInput(taskDTO.getWorkers()))
-                .done(false)
-                .build();
-    }
-
-    public void saveNewTask(AddTaskDTO taskDTO, Long projectId) throws CreateException {
         try {
-            taskRepository.save(createTask(taskDTO, projectId));
+            Task task = createTask(taskDTO, projectId);
+            taskRepository.save(task);
+            return task;
         } catch (DataIntegrityViolationException | CanNotFoundException e) {
             throw new CreateException("can not save task to project with id = " + projectId);
         }
     }
 
-    private List<Artifact> getArtifactsFromInput(String input) {
-        return Arrays.stream(input.split("\\s*,\\s*"))
-                .map(Long::parseLong)
-                .map(t -> artifactRepository.findById(t)
-                        .orElseThrow(() -> new RuntimeException("can not find artifact with id = " + t)))
-                .collect(Collectors.toList());
+    public Task createTask(AddTaskDTO taskDTO, Long projectId) throws CanNotFoundException {
+
+        Project project = projectService.findProjectById(projectId);
+
+        return Task.builder()
+                .name(taskDTO.getName())
+                .description(taskDTO.getDescription())
+                .deadline(convertToLocalDate(taskDTO.getDeadline()).plusDays(1))
+                .project(project)
+                .done(false)
+                .build();
 
     }
 
-    private List<Worker> getWorkersFromInput(String input) {
-        return Arrays.stream(input.split("\\s*,\\s*"))
-                .map(Long::parseLong)
-                .map(t -> workerRepository.findById(t)
-                        .orElseThrow(() -> new RuntimeException("can not find worker with id = " + t)))
-                .collect(Collectors.toList());
+    private LocalDate convertToLocalDate(String date) {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d").withLocale(LocaleContextHolder.getLocale());
+        return LocalDate.parse(date, formatter);
     }
 
-    public void deleteTaskFromProject(Long taskID) {
-        Task task = taskRepository.findById(taskID).orElseThrow(() -> new RuntimeException("can not find"));
-        List<Worker> workers = task.getWorkers();
+    /**
+     * makes relationship task-workers, task-artifacts
+     *
+     * @param artifacts - input artifacts from user
+     * @param workers   - input workers from user
+     * @param taskId    - id of task
+     */
 
-        while (!(workers.size() == 0)) {
-            deleteTask(workers.get(workers.size() - 1), task);
-        }
+    @Transactional(propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
+    public void makeRelationship(String artifacts, String workers, Long taskId) throws CanNotFoundException {
 
-        taskRepository.delete(task);
+        Task task = findTaskById(taskId);
+        getArtifactsFromInput(artifacts, task);
+        getWorkersFromInput(workers, task);
+    }
+
+    /**
+     * add relationship task-artifacts from user input
+     *
+     * @param input - input string with artifacts from user
+     * @param task  - task to add artifacts
+     */
+    private void getArtifactsFromInput(String input, Task task) {
+
+        List<Artifact> artifacts = Arrays.stream(input.split("\\s*,\\s*"))
+                .map(Long::parseLong)
+                .map(t -> {
+                    Artifact artifacts1 = new Artifact();
+                    try {
+                        artifacts1 = artifactService.findArtifactById(t);
+                    } catch (CanNotFoundException e) {
+                        log.error("can not find exception");
+                    }
+                    return artifacts1;
+                })
+                .collect(Collectors.toList());
+
+        artifacts.forEach(task::addArtifacts);
+    }
+
+    /**
+     * add relationship task-worker from user input
+     *
+     * @param input - input string with workers from user
+     * @param task  - task to add workers
+     */
+    private void getWorkersFromInput(String input, Task task) {
+
+        List<Worker> workers = Arrays.stream(input.split("\\s*,\\s*"))
+                .map(Long::parseLong)
+                .map(w -> {
+                    Worker worker = new Worker();
+                    try {
+                        worker = workerService.findWorkerById(w);
+                    } catch (CanNotFoundException e) {
+                        log.error("can not find exception");
+                    }
+                    return worker;
+                })
+                .collect(Collectors.toList());
+
+        workers.forEach(task::addWorker);
     }
 
 
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
-    public void deleteTask(Worker worker, Task task) {
-        try {
-            deleteWorkersFromTasks(task, worker);
-            deleteTaskFromWorker(task, worker);
-        } catch (ConcurrentModificationException e) {
-            log.error("concurrent exception");
-        }
+    public void deleteTaskFromProject(Long taskID) throws CanNotFoundException {
+
+        Task task = findTaskById(taskID);
+        taskRepository.delete(task);
     }
 
-    public void deleteTaskFromWorker(Task task, Worker worker) {
-
-        List<Task> workerTasks = worker.getTasks();
-        workerTasks.remove(task);
-        taskRepository.save(task);
-    }
-
-    public void deleteWorkersFromTasks(Task task, Worker worker) {
-
-        List<Worker> taskWorkers = task.getWorkers();
-        taskWorkers.remove(worker);
-        workerRepository.save(worker);
+    public Task findTaskById(Long id) throws CanNotFoundException {
+        return taskRepository
+                .findById(id)
+                .orElseThrow(() -> new CanNotFoundException("Can not find task with id = " + id));
     }
 
 }

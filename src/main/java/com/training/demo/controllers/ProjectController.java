@@ -3,12 +3,14 @@ package com.training.demo.controllers;
 import com.training.demo.controllers.exception.CanNotFoundException;
 import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.dto.ProjectDTO;
+import com.training.demo.dto.SearchDTO;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
 import com.training.demo.service.ArtifactService;
 import com.training.demo.service.ProjectService;
 import com.training.demo.service.TaskService;
+import com.training.demo.service.WorkerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -22,12 +24,12 @@ import javax.validation.Valid;
 public class ProjectController {
     private final ProjectService projectService;
     private final TaskService taskService;
-    private final ArtifactService artifactService;
+    private final WorkerService workerService;
 
-    public ProjectController(ProjectService projectService, TaskService taskService, ArtifactService artifactService) {
+    public ProjectController(ProjectService projectService, TaskService taskService, WorkerService workerService) {
         this.projectService = projectService;
         this.taskService = taskService;
-        this.artifactService = artifactService;
+        this.workerService = workerService;
     }
 
     @RequestMapping("/")
@@ -37,64 +39,42 @@ public class ProjectController {
     }
 
     @GetMapping("/home")
-    public String mainPage(Model model, @AuthenticationPrincipal Worker worker) {
+    public String mainPage(Model model, @AuthenticationPrincipal Worker worker,
+                           @ModelAttribute("searchDTO") SearchDTO searchDTO) {
+
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         model.addAttribute("projects", projectService.findProjectsByWorker(worker));
         return "homePage";
     }
     
     
     @GetMapping("/info")
-    public String info( @AuthenticationPrincipal Worker worker,Model model) {
+    public String info(@AuthenticationPrincipal Worker worker, Model model,
+                       @ModelAttribute("searchDTO") SearchDTO searchDTO) throws CanNotFoundException {
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         model.addAttribute("user_info", worker);
         model.addAttribute("projects", projectService.findProjectsByWorker(worker));
+        model.addAttribute("tasks", taskService.findDoneTasksByWorker(worker));
         return "info";
     }
-
-
-    private void getProjectById(Model model, Long id) throws CanNotFoundException {
-        model.addAttribute("projectById", projectService.findProjectById(id));
-    }
-
 
     private void getAllProjects(Model model) {
         model.addAttribute("project", projectService.getAllProjects());
     }
 
-    private void saveProject(Project project) throws Exception {
-        projectService.saveProject(project);
+
+
+    @GetMapping("/search")
+    public String searchProjects(@ModelAttribute("searchDTO") SearchDTO searchDTO, Model model) {
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
+        return "homePage";
     }
 
-
-//    // видалення проекту
-//    @RequestMapping("/delete/{id}")
-//    public String deleteProject(Project project, @PathVariable("id") Long id) throws Exception {
-//        projectService.deleteProject(project);
-//        return "redirect:/home";
-//    }
-
-    @RequestMapping("/user_projects/{id}")
-    public String getProjectById(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker)
-            throws CanNotFoundException {
-        Project project = projectService.findProjectById(id);
-        model.addAttribute("projectName", project.getName());
-        model.addAttribute("tasks", taskService.findByProjectAndWorkers(project, worker));
-        return "user/projects";
-    }
-
-    @GetMapping("/do_task/{id}")
-    public String makeTaskDone(Model model, @PathVariable("id") Long id) {
-        taskService.makeTaskDone(id);
-        return "redirect:/home";
-        
-    }
-
-    @GetMapping("/search/{id}")
-    public String searchProjects(Model model, @PathVariable("id") Long id) throws CanNotFoundException {
-        Project project = projectService.findProjectById(id);
-        model.addAttribute("projectName", project.getName());
-        model.addAttribute("tasks", taskService.getAllTasks());
-        //model.addAttribute("project", project);
-        return "user/projects";
+    @PostMapping("/search")
+    public String searchProjectByID(@ModelAttribute("searchDTO") SearchDTO searchDTO,
+                                    @AuthenticationPrincipal Worker worker) throws CanNotFoundException {
+        Project project = projectService.findProjectById(searchDTO.getSearchID());
+        return "redirect:project_info/" + project.getId();
     }
 
     @GetMapping("/create")
@@ -111,5 +91,18 @@ public class ProjectController {
         return "redirect:/home";
     }
 
+
+    @RequestMapping("/project_info/{id}")
+    public String projectInfoPage(@AuthenticationPrincipal Worker worker, @PathVariable("id") Long projectID)
+            throws CanNotFoundException {
+
+        Project project = projectService.findProjectById(projectID);
+        if (workerService.isAdmin(worker, project)) {
+            return "redirect:/admin/{id}";
+        } else {
+            return "redirect:/worker/{id}";
+        }
+
+    }
 }
 

@@ -4,10 +4,12 @@ import com.training.demo.entity.Artifact;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Setter
 @Getter
 @Builder
@@ -22,17 +24,19 @@ public class AddTaskDTO {
 
     private String description;
 
-    private LocalDate deadline;
+    private String deadline;
 
     private String workers;
 
     private String artifacts;
 
+    private LocalDate localDateDeadline;
+
     public AddTaskDTO(Task task) {
         this.id = task.getId();
         this.name = task.getName();
         this.description = task.getDescription();
-        this.deadline = task.getDeadline();
+        this.localDateDeadline = task.getDeadline();
         this.workers = task.getWorkers()
                 .stream()
                 .map(Worker::getId)

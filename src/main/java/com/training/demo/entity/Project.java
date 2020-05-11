@@ -3,7 +3,6 @@ package com.training.demo.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -39,4 +38,21 @@ public class Project {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "project")
     private List<Artifact> artifacts;
+
+
+    public void deleteWorkerFromProject(Worker worker) {
+        workers.remove(worker);
+        worker.getProjects().remove(this);
+    }
+
+    public void addWorkerToProject(Worker worker) {
+        workers.add(worker);
+        worker.getProjects().add(this);
+    }
+
+    @PreRemove
+    public void deleteProject() {
+        this.getWorkers().forEach(t -> t.getProjects().remove(this));
+    }
+
 }

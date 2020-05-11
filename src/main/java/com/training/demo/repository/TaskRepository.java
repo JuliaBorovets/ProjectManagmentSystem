@@ -4,7 +4,6 @@ import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

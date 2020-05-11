@@ -49,16 +49,10 @@
                     </thead>
                     <tbody>
                     <tr th:each="u : ${user_info}">
-<!--                        <td align="center" th:text="${u.id}"></td>-->
                         <td align="center" th:text="${u.name}"></td>
                         <td align="center" th:text="${u.surname}"></td>
                         <td align="center" th:text="${u.login}"></td>
                         <td align="center" th:text="${u.email}"></td>
-
-<!--                        <td align="center">-->
-<!--                            <a class="btn btn-default" th:href="@{|/user_projects/${p.id}|}"><em-->
-<!--                                    class="fa fa-info"></em></a>-->
-<!--                        </td>-->
                     </tr>
                     </tbody>
                 </table>
@@ -97,7 +91,7 @@
                         <td align="center" th:text="${p.description}"></td>
 
                         <td align="center">
-                            <a class="btn btn-default" th:href="@{|/user_projects/${p.id}|}"><em
+                            <a class="btn btn-default" th:href="@{|/project_info/${p.id}|}"><em
                                     class="fa fa-info"></em></a>
                         </td>
                     </tr>
@@ -105,6 +99,55 @@
                 </table>
             </div>
         </div>
+    </div>
+</div>
+    
+<div class="container-fluid">
+    <div class="card shadow">
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{notactive.tasks}">tasks</th>
+                <th th:text="#{artifacts}">artifacts</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="t : ${tasks}">
+
+                <td>
+                    <table class="table table-nostriped">
+                        <tr>
+                            <td th:text="#{number.task}">id</td>
+                            <td th:text="${t.id}">id</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{name.of.task}">name</td>
+                            <td th:text="${t.name}">name</td>
+                        </tr>
+                        <tr>
+                            <td th:text="#{description}">description</td>
+                            <td th:text="${t.description}">description</td>
+                        </tr>
+
+
+
+                    </table>
+                </td>
+                <td>
+
+                    <table class="table table-nostriped">
+                        <tr th:each="ar : ${t.artifacts}">
+                            <td th:text="${ar.name}">name</td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 

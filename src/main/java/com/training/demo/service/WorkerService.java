@@ -1,24 +1,19 @@
 package com.training.demo.service;
 
+import com.training.demo.controllers.exception.CanNotFoundException;
 import com.training.demo.controllers.exception.CreateException;
-import com.training.demo.controllers.exception.UpdateException;
+import com.training.demo.controllers.util.ProjectPasswordEncoder;
 import com.training.demo.dto.WorkerDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Worker;
 import com.training.demo.repository.WorkerRepository;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,13 +21,11 @@ import java.util.stream.Collectors;
 public class WorkerService implements UserDetailsService {
 
     private final WorkerRepository workerRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    final Pattern pattern = Pattern.compile("admin");
+    private final ProjectPasswordEncoder passwordEncoder;
 
-    public WorkerService(WorkerRepository workerRepository) {
+    public WorkerService(WorkerRepository workerRepository, ProjectPasswordEncoder passwordEncoder) {
         this.workerRepository = workerRepository;
-
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<WorkerDTO> findWorkersByProjectId(Project project) {
@@ -47,27 +40,10 @@ public class WorkerService implements UserDetailsService {
                         .build()).collect(Collectors.toList());
     }
 
-    public Worker findWorkerById(Long id) {
+    public Worker findWorkerById(Long id) throws CanNotFoundException {
         return workerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Немає такого працівника"));
+                .orElseThrow(() -> new CanNotFoundException("can nor find worker with id = " + id));
     }
-
-    public Worker findWorkerByLogin(String login) {
-        return workerRepository.findByLogin(login)
-                .orElseThrow(() -> new RuntimeException("Немає такого працівника"));
-    }
-
-    public List<Worker> getAllWorkers() {
-        return (List<Worker>) workerRepository.findAll();
-    }
-
-//    public void saveNewWorker(WorkerDTO worker) throws Exception {
-//        try {
-//            workerRepository.save(createWorker(worker));
-//        } catch (DataIntegrityViolationException e) {
-//            throw new Exception("Помилка створення працівника");
-//        }
-//    }
 
     private Worker createWorker(WorkerDTO worker) {
         return Worker.builder()
@@ -83,53 +59,6 @@ public class WorkerService implements UserDetailsService {
                 .build();
     }
 
-
-    private void createAdmin() throws CreateException {
-//        if (!pattern.matcher("admin").matches()) {
-//            throw new IllegalArgumentException("Invalid String");
-//        }
-        if (workerRepository.findByLogin("admin").isPresent()) {
-            return;
-        }
-
-        Worker admin = Worker.builder()
-                .name("Адмін")
-                .surname("Адмін")
-                .login("admin")
-                .email("admin@gmail.com")
-                // .password(passwordEncoder.encode("root"))
-                .build();
-
-        try {
-            workerRepository.save(admin);
-        } catch (DataIntegrityViolationException e) {
-            throw new CreateException("Помилка створення адміна");
-        }
-    }
-
-    public void addWorkerToProject(Worker worker, Project project) throws UpdateException {
-        Worker updatedWorker = Worker.builder()
-                .name(worker.getName())
-                .surname(worker.getSurname())
-                .login(worker.getLogin())
-                .email(worker.getEmail())
-                .password(worker.getPassword())
-//                .project(project)
-                .build();
-        try {
-            workerRepository.save(updatedWorker);
-        } catch (DataIntegrityViolationException e) {
-            throw new UpdateException("Помилка додавання працівника");
-        }
-
-    }
-
-    //    private Long getAdminAccount() {
-//        Worker admin = workerRepository.findByLogin("admin")
-//                .orElseThrow(() -> new UsernameNotFoundException("Немає адміна"));
-//
-//        return admin.getId();
-//    }
     public void saveNewWorker(WorkerDTO worker) throws CreateException {
         try {
             workerRepository.save(createWorker(worker));
@@ -140,9 +69,14 @@ public class WorkerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        log.error("loading user with login " + login);
-        log.error(login);
-        return workerRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException(login));
+        log.info("loading user with login " + login);
+        log.info(login);
+        return workerRepository.findByLogin(login)
+                .orElseThrow(() -> new UsernameNotFoundException("can not find user with login = " + login));
     }
 
+
+    public boolean isAdmin(Worker worker, Project project) {
+        return project.getAdmin().getId().equals(worker.getId());
+    }
 }

@@ -84,19 +84,19 @@
 
             <div class="input_text">
                 <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="input_text"
-                       th:placeholder="#{artifacts.name}" required>
+                       th:placeholder="#{artifacts.name}" maxlength="20" required>
             </div>
             <br>
 
             <div class="input_text">
                 <input type="text" id="type" name="type" size="100px" th:field="*{type}" class="input_text"
-                       th:placeholder="#{artifacts.type}" required>
+                       th:placeholder="#{artifacts.type}" maxlength="20" required>
             </div>
             <br>
 
             <div class="input_text">
                 <input type="text" id="content" name="content" size="100px" th:field="*{content}" class="input_text"
-                       th:placeholder="#{artifacts.content}" required>
+                       th:placeholder="#{artifacts.content}" maxlength="20" required>
             </div>
             <br>
             <div>
@@ -114,7 +114,7 @@
 <br>
 <h2 class="info" th:text="#{workers}"><span>{workers}</span></h2>
 
-<div class="container-fluid">
+<div class="added_workers">
     <div class="card shadow">
 
         <div class="card-body">
@@ -187,7 +187,7 @@
 <br>
 <h2 class="info" th:text="#{active.tasks}"><span>{active tasks}</span></h2>
 
-<div class="container-fluid">
+<div class="created_tasks">
     <div class="card shadow">
 
         <div class="card-body">
@@ -207,11 +207,11 @@
                     <tbody>
                     <tr th:each="activeTask : ${active_tasks}">
                         <td align="center" th:text="${activeTask.id}"></td>
-                        <td align="center" th:text="${activeTask.name}"></td>
-                        <td align="center" th:text="${activeTask.description}"></td>
-                        <td align="center" th:text="${activeTask.deadline}"></td>
-                        <td align="center" th:text="${activeTask.workers}"></td>
-                        <td align="center" th:text="${activeTask.artifacts}"></td>
+                        <td align="center" class="formatTable" th:text="${activeTask.name}"></td>
+                        <td align="center" class="formatTableDesc" th:text="${activeTask.description}"></td>
+                        <td align="center" th:text="${activeTask.localDateDeadline}"></td>
+                        <td align="center" class="formatTable" th:text="${activeTask.workers}"></td>
+                        <td align="center" class="formatTable" th:text="${activeTask.artifacts}"></td>
 
                         <td align="center">
                             <form th:action="@{/admin/{pid}/delete_task/{id}(id=${activeTask.id}, pid=${project.id})}">
@@ -230,9 +230,70 @@
 </div>
 
 
+<section class="jumbotron2 text-center">
+    <div class="project">
+        <form id="newTask" name="newTask" th:action="@{/admin/{pid}/create_task(pid=${project.id})}"
+              th:object="${newTask}" method="post">
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="name" name="name" size="100px" th:field="*{name}" class="name"
+                       th:placeholder="#{name.of.task}" maxlength="30" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="description" name="description" size="100px" th:field="*{description}"
+                       class="description" th:placeholder="#{description}" maxlength="75" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <label for="deadline" th:text="#{deadline}"></label>
+                <input type="date" id="deadline" name="deadline" size="100px" th:field="*{deadline}"
+                       class="deadline" th:placeholder="#{deadline}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="workers" name="workers" size="100px" th:field="*{workers}"
+                       class="workers" th:placeholder="#{workers.id.enter}" required>
+            </div>
+            <br>
+
+            <div class="input_text">
+                <input type="text" id="artifacts" name="artifacts" size="100px" th:field="*{artifacts}"
+                       class="artifacts" th:placeholder="#{artifacts.id.enter}" required>
+            </div>
+            <br>
+            <div>
+                <input class="button_create btn-primary " type="submit"/>
+            </div>
+            <br>
+
+            <br>
+
+        </form>
+    </div>
+</section>
+
 <br>
-<br>
+<section class="jumbotron2 text-center">
+    <form th:action="@{/admin/delete/{pid}(pid=${project.id})}" method="post">
 
 
+        <div>
+            <button class="button_create btn-primary " id="deleting" onclick="return confirmDialog();"
+                    th:text="DELETE"></button>
+        </div>
+    </form>
+
+</section>
+
+<br>
+
+<script src="/js/confirmDialog.js"></script>
+
+<div th:include="fragments/footer :: footer" th:remove="tag"></div>
 </body>
 </html>

@@ -3,14 +3,14 @@
     background: linear-gradient(120deg, #1f0423, #6c0773);
 }
 
-body {
-    background-color: #F5EEF8
-}
-
 .info {
     text-align: center;
 }
 
+.formatTable {
+    max-width: 120px;
+    max-height: 20px;
+}
 
 .form-control {
 
@@ -24,6 +24,19 @@ body {
 .container-fluid {
     width: 700px;
 
+}
+
+.task {
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 300px;
+    overflow: scroll;
+}
+
+.task_to_done {
+    max-width: 120px;
+    overflow: auto;
 }
 
 .collapse {
@@ -54,9 +67,6 @@ body {
     color: #214a80;
 }
 
-.info {
-    text-align: center;
-}
 
 .left_projects {
     margin-left: 20px;
@@ -99,26 +109,24 @@ body {
     color: #2980ef;
 }
 
-.icon {
-    width: 50px;
-    height: 50px;
-    font-size: 80px;
-}
 
 
 .d-block {
     color: black;
 }
 
-element.style {
-}
 
 .container {
-    width: 100%;
+    width: 80%;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+    align-items: center;
+}
+
+.to_done {
+    max-width: 40px;
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -129,7 +137,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     box-sizing: border-box;
 }
 
-user agent stylesheet
 main {
     display: block;
 }
