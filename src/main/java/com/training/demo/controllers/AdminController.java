@@ -5,6 +5,7 @@ import com.training.demo.controllers.exception.CreateException;
 import com.training.demo.dto.AddTaskDTO;
 import com.training.demo.dto.AddWorkerDTO;
 import com.training.demo.dto.ArtifactDTO;
+import com.training.demo.dto.SearchDTO;
 import com.training.demo.entity.Project;
 import com.training.demo.entity.Task;
 import com.training.demo.entity.Worker;
@@ -39,7 +40,10 @@ public class AdminController {
     public String testAdmin(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker,
                             @ModelAttribute("newArtifact") ArtifactDTO artifactDTO,
                             @ModelAttribute("newWorker") AddWorkerDTO newWorker,
-                            @ModelAttribute("newTask") AddTaskDTO newTask) throws CanNotFoundException {
+                            @ModelAttribute("newTask") AddTaskDTO newTask,
+                            @ModelAttribute("searchDTO") SearchDTO searchDTO) throws CanNotFoundException {
+
+        model.addAttribute("searchDTO", searchDTO == null ? new SearchDTO() : searchDTO);
         Project project = projectService.findProjectById(id);
         model.addAttribute("error", false);
         model.addAttribute("project", project);
@@ -121,6 +125,14 @@ public class AdminController {
         Project project = projectService.findProjectById(projectId);
         model.addAttribute("project", project);
     }
+
+
+//    // видалення проекту
+//    @RequestMapping("/delete/{id}")
+//    public String deleteProject(Project project, @PathVariable("id") Long id) throws Exception {
+//        projectService.deleteProject(project);
+//        return "redirect:/home";
+//    }
 
 
 }

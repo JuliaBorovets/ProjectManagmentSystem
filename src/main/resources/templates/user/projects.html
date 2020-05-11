@@ -26,7 +26,7 @@
 <br>
 
 <div class="info">
-    <h2 class="info" th:text="${projectName}"><span>{project name}</span></h2>
+    <h2 class="info" th:text="${project.name}"><span>{project name}</span></h2>
 </div>
 
 <br>
@@ -37,28 +37,28 @@
     <table class="table table-striped">
             <thead>
             <tr>
-                <th th:text="#{active.tasks}">tasks</th>
-                <th th:text="#{artifacts}">artifacts</th>
-                <th th:text="#{to.do}">done</th>
+                <th align="center" th:text="#{active.tasks}">tasks</th>
+                <th align="center" th:text="#{artifacts}">artifacts</th>
+                <th class="to_done" align="center" th:text="#{to.do}">done</th>
             </tr>
             </thead>
             <tbody>
 
             <tr th:each="t : ${tasks}">
 
-                <td>
+                <td class="task_to_done">
                     <table class="table table-nostriped">
                         <tr>
                             <td th:text="#{number.task}">id</td>
                             <td th:text="${t.id}">id</td>
                         </tr>
-                        <tr>
+                        <tr class="formatTableDesc">
                             <td th:text="#{name.of.task}">name</td>
-                            <td th:text="${t.name}">name</td>
+                            <td class="formatTableDesc" th:text="${t.name}">name</td>
                         </tr>
                         <tr>
                             <td th:text="#{description}">description</td>
-                            <td th:text="${t.description}">description</td>
+                            <td class="formatTableDesc" th:text="${t.description}">description</td>
                         </tr>
                         <tr>
                             <td th:text="#{deadline}">deadline</td>
@@ -68,25 +68,24 @@
 
                     </table>
                 </td>
-                <td>
+                <td class="task_to_done">
 
                     <table class="table table-nostriped">
                         <tr th:each="ar : ${t.artifacts}">
-                            <td th:text="${ar.name}">name</td>
+                            <td class="formatTableDesc" th:text="${ar.name}">name</td>
                         </tr>
                     </table>
 
                 </td>
 
 
-                <td>
+                <td class="to_done">
 
-                    <table class="table table-nostriped">
-
+                    <table class="to_done table-nostriped" align="center">
                         <tr>
-                            <td>
+                            <td class="to_done" align="center">
                                 <div>
-                                    <form th:action="@{/do_task/{id}(id=${t.id})}">
+                                    <form th:action="@{/worker/{pid}/do_task/{id}(id=${t.id}, pid=${project.id})}">
                                         <form>
                                             <button class="btn btn-default" type="submit" href="#">
                                                 <i class="fa fa-bolt" aria-hidden="true"></i>

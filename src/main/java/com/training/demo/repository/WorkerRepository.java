@@ -15,8 +15,6 @@ public interface WorkerRepository extends CrudRepository<Worker, Long> {
 
     Optional<Worker> findByLogin(String login);
 
-    Optional<Worker> findByName(String name);
-
     List<Worker> findWorkersByProjects(Project project);
 
     Optional<Worker> findByIdAndLogin(Long id, String login);

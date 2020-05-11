@@ -23,8 +23,8 @@ body {
 
 .container-fluid {
     width: 60%;
-    height: 300px;
-    overflow: scroll;
+    max-height: 300px;
+    overflow: auto;
 
 }
 
@@ -32,16 +32,16 @@ body {
     width: 80%;
     margin-right: auto;
     margin-left: auto;
-    height: 500px;
-    overflow: scroll;
+    max-height: 500px;
+    overflow: auto;
 }
 
 .added_workers {
     width: 70%;
     margin-right: auto;
     margin-left: auto;
-    height: 300px;
-    overflow: scroll;
+    max-height: 300px;
+    overflow: auto;
 }
 
 .formatTable {

@@ -13,8 +13,6 @@ public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     Optional<Project> findById(Long id);
 
-    Optional<Project> findByName(String name);
-
     List<Project> findByWorkersOrAdmin(Worker workers, Worker admin);
 
 }

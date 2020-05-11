@@ -1,13 +1,13 @@
 package com.training.demo.service;
 
 import com.training.demo.controllers.exception.CanNotFoundException;
-import com.training.demo.controllers.exception.DeleteException;
 import com.training.demo.dto.ArtifactDTO;
 import com.training.demo.entity.Artifact;
 import com.training.demo.entity.Project;
 import com.training.demo.repository.ArtifactRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -32,15 +32,6 @@ public class ArtifactService {
             artifactRepository.save(updatedArtifact);
         } catch (DataIntegrityViolationException e) {
             throw new Exception("Помилка додавання артефакту");
-        }
-    }
-
-    public void deleteArtifact(Artifact artifact) throws DeleteException {
-
-        try {
-            artifactRepository.delete(artifact);
-        } catch (DataIntegrityViolationException e) {
-            throw new DeleteException("Помилка видалення артефакту");
         }
     }
 

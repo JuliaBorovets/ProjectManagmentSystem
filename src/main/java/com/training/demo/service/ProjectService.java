@@ -66,13 +66,6 @@ public class ProjectService {
         }
     }
 
-    public void saveProject(Project project) throws CreateException {
-        try {
-            projectRepository.save(project);
-        } catch (DataIntegrityViolationException e) {
-            throw new CreateException("saveProject exception");
-        }
-    }
 
     public List<Project> getAllProjects() {
         return (List<Project>) projectRepository.findAll();
@@ -119,5 +112,6 @@ public class ProjectService {
         workerRepository.save(worker);
         projectRepository.save(project);
     }
+
 
 }

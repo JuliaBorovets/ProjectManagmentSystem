@@ -46,6 +46,7 @@ public class TaskService {
 
 
     public List<Task> findByProjectAndWorkers(Project project, Worker worker) {
+
         List<Task> tasks = taskRepository.findByProjectAndWorkers(project, worker);
 
         log.error(tasks.toString());
@@ -57,6 +58,7 @@ public class TaskService {
     }
 
     public List<Task> findDoneTasksByWorker(Worker worker) {
+
         List<Task> tasks = worker.getTasks();
         return tasks.stream()
                 .filter(Task::isDone)
@@ -65,6 +67,7 @@ public class TaskService {
     }
 
     public List<AddTaskDTO> findActiveTasksByProject(Project project) {
+
         return taskRepository.findByProject(project)
                 .stream()
                 .filter(t -> !t.isDone())
@@ -75,6 +78,7 @@ public class TaskService {
 
 
     public void makeTaskDone(Long id) {
+
         Task task = taskRepository
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("no task found"));
@@ -83,6 +87,7 @@ public class TaskService {
     }
 
     public Task saveNewTask(AddTaskDTO taskDTO, Long projectId) throws CreateException {
+
         try {
             Task task = createTask(taskDTO, projectId);
             taskRepository.save(task);
@@ -93,6 +98,7 @@ public class TaskService {
     }
 
     public Task createTask(AddTaskDTO taskDTO, Long projectId) throws CanNotFoundException {
+
         Project project = projectRepository
                 .findById(projectId)
                 .orElseThrow(() -> new CanNotFoundException("can not found project with id = " + projectId));
@@ -108,6 +114,7 @@ public class TaskService {
     }
 
     private LocalDate convertToLocalDate(String date) {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d").withLocale(LocaleContextHolder.getLocale());
         return LocalDate.parse(date, formatter);
     }
@@ -123,6 +130,7 @@ public class TaskService {
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
     public void makeRelationship(String artifacts, String workers, Long taskId) throws CanNotFoundException {
+
         Task task = taskRepository
                 .findById(taskId)
                 .orElseThrow(() -> new CanNotFoundException("can not found task with id = " + taskId));
@@ -131,12 +139,13 @@ public class TaskService {
     }
 
     /**
-     * add relationship task-artifacts
+     * add relationship task-artifacts from user input
      *
      * @param input - input string with artifacts from user
      * @param task  - task to add artifacts
      */
     private void getArtifactsFromInput(String input, Task task) {
+
         List<Artifact> artifacts = Arrays.stream(input.split("\\s*,\\s*"))
                 .map(Long::parseLong)
                 .map(t -> artifactRepository.findById(t)
@@ -147,7 +156,7 @@ public class TaskService {
     }
 
     /**
-     * add relationship task-worker
+     * add relationship task-worker from user input
      *
      * @param input - input string with workers from user
      * @param task  - task to add workers
@@ -167,7 +176,10 @@ public class TaskService {
     @Transactional(propagation = Propagation.REQUIRES_NEW,
             rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
     public void deleteTaskFromProject(Long taskID) {
-        Task task = taskRepository.findById(taskID).orElseThrow(() -> new RuntimeException("can not find"));
+
+        Task task = taskRepository
+                .findById(taskID)
+                .orElseThrow(() -> new RuntimeException("can not find"));
         taskRepository.delete(task);
     }
 

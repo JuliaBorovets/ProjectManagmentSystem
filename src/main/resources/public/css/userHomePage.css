@@ -11,6 +11,10 @@ body {
     text-align: center;
 }
 
+.formatTable {
+    max-width: 120px;
+    max-height: 20px;
+}
 
 .form-control {
 
@@ -24,6 +28,19 @@ body {
 .container-fluid {
     width: 700px;
 
+}
+
+.task {
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 300px;
+    overflow: scroll;
+}
+
+.task_to_done {
+    max-width: 120px;
+    overflow: auto;
 }
 
 .collapse {
@@ -110,15 +127,18 @@ body {
     color: black;
 }
 
-element.style {
-}
 
 .container {
-    width: 100%;
+    width: 80%;
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
+    align-items: center;
+}
+
+.to_done {
+    max-width: 40px;
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -129,7 +149,6 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     box-sizing: border-box;
 }
 
-user agent stylesheet
 main {
     display: block;
 }
