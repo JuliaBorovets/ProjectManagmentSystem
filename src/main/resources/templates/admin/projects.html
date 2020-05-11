@@ -277,10 +277,23 @@
     </div>
 </section>
 
+<br>
+<section class="jumbotron2 text-center">
+    <form th:action="@{/admin/delete/{pid}(pid=${project.id})}" method="post">
+
+
+        <div>
+            <button class="button_create btn-primary " id="deleting" onclick="return confirmDialog();"
+                    th:text="DELETE"></button>
+        </div>
+    </form>
+
+</section>
 
 <br>
-<br>
 
+<script src="/js/confirmDialog.js"></script>
 
+<div th:include="fragments/footer :: footer" th:remove="tag"></div>
 </body>
 </html>

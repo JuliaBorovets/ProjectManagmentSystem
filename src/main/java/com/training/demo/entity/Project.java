@@ -44,4 +44,9 @@ public class Project {
         workers.remove(worker);
         worker.getProjects().remove(this);
     }
+
+    @PreRemove
+    public void deleteProject() {
+        this.getWorkers().forEach(t -> t.getProjects().remove(this));
+    }
 }

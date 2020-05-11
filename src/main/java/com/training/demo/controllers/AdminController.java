@@ -36,7 +36,8 @@ public class AdminController {
         this.workerService = workerService;
     }
 
-    @RequestMapping({"/{id}", "/{id}/create_artifact", "/{id}/create_worker", "/{id}/create_task"})
+    @RequestMapping({"/{id}", "/{id}/create_artifact", "/{id}/create_worker", "/{id}/create_task",
+            "/delete{id}"})
     public String testAdmin(Model model, @PathVariable("id") Long id, @AuthenticationPrincipal Worker worker,
                             @ModelAttribute("newArtifact") ArtifactDTO artifactDTO,
                             @ModelAttribute("newWorker") AddWorkerDTO newWorker,
@@ -126,14 +127,12 @@ public class AdminController {
         model.addAttribute("project", project);
     }
 
+    @RequestMapping("/delete/{id}")
+    public String deleteProject(@PathVariable("id") Long id, Model model) throws CanNotFoundException {
+        projectService.deleteProject(id);
+        return "redirect:/home";
 
-//    // видалення проекту
-//    @RequestMapping("/delete/{id}")
-//    public String deleteProject(Project project, @PathVariable("id") Long id) throws Exception {
-//        projectService.deleteProject(project);
-//        return "redirect:/home";
-//    }
-
+    }
 
 }
 
