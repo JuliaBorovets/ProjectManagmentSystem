@@ -22,8 +22,35 @@ body {
 }
 
 .container-fluid {
-    width: 700px;
+    width: 60%;
+    height: 300px;
+    overflow: scroll;
 
+}
+
+.created_tasks {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 500px;
+    overflow: scroll;
+}
+
+.added_workers {
+    width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+    height: 300px;
+    overflow: scroll;
+}
+
+.formatTable {
+    max-width: 120px;
+    max-height: 20px;
+}
+
+.formatTableDesc {
+    max-width: 160px;
 }
 
 .collapse {
@@ -190,7 +217,7 @@ html {
 }
 
 .tasks {
-    width: 600px;
+    width: 700px;
     border-color: white;
     color: white;
 }

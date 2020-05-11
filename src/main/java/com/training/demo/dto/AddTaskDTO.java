@@ -30,11 +30,13 @@ public class AddTaskDTO {
 
     private String artifacts;
 
+    private LocalDate localDateDeadline;
+
     public AddTaskDTO(Task task) {
         this.id = task.getId();
         this.name = task.getName();
         this.description = task.getDescription();
-//        this.deadline = task.getDeadline();
+        this.localDateDeadline = task.getDeadline();
         this.workers = task.getWorkers()
                 .stream()
                 .map(Worker::getId)

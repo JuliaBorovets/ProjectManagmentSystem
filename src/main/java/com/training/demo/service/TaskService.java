@@ -12,12 +12,14 @@ import com.training.demo.repository.ProjectRepository;
 import com.training.demo.repository.TaskRepository;
 import com.training.demo.repository.WorkerRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -66,7 +68,7 @@ public class TaskService {
         return taskRepository.findByProject(project)
                 .stream()
                 .filter(t -> !t.isDone())
-                .sorted(Comparator.comparing(Task::getId))
+                .sorted(Comparator.comparing(Task::getId).reversed())
                 .map(AddTaskDTO::new)
                 .collect(Collectors.toList());
     }
@@ -98,11 +100,16 @@ public class TaskService {
         return Task.builder()
                 .name(taskDTO.getName())
                 .description(taskDTO.getDescription())
-                .deadline(LocalDate.now())
+                .deadline(convertToLocalDate(taskDTO.getDeadline()).plusDays(1))
                 .project(project)
                 .done(false)
                 .build();
 
+    }
+
+    private LocalDate convertToLocalDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-d").withLocale(LocaleContextHolder.getLocale());
+        return LocalDate.parse(date, formatter);
     }
 
     /**
