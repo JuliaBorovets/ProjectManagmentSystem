@@ -113,5 +113,16 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW,
+            rollbackFor = {CanNotFoundException.class, DataIntegrityViolationException.class})
+    public void deleteProject(Long projectID) throws CanNotFoundException {
+
+        Project project = projectRepository
+                .findById(projectID)
+                .orElseThrow(() -> new CanNotFoundException("can not find project"));
+        projectRepository.deleteById(projectID);
+        project.getWorkers().forEach(workerRepository::save);
+    }
+
 
 }
