@@ -57,7 +57,7 @@
                     <tr th:each="ar : ${artifacts}">
                         <td align="center" th:text="${ar.id}"></td>
                         <td align="center" th:text="${ar.name}"></td>
-                        <td align="center" th:text="${ar.content}"></td>
+                        <td align="center" th:text="${ar.type}"></td>
 
                         <td align="center">
                             <form th:action="@{/admin/{pid}/delete_artifact/{id}(id=${ar.id}, pid=${project.id})}">
